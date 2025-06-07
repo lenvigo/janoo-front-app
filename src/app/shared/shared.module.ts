@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 
 // Componente Navbar
 import { NavbarComponent } from './navbar/navbar.component';
@@ -24,6 +25,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     MatInputModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    MatDividerModule,
   ],
   exports: [
     CommonModule,
@@ -34,6 +36,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     MatInputModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    MatDividerModule,
     NavbarComponent,
   ],
 })

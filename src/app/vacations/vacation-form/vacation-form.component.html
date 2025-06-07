@@ -1,0 +1,56 @@
+<div class="vacation-form-container">
+  <h2>Solicitar Vacaciones</h2>
+
+  <form [formGroup]="vacationForm" (ngSubmit)="onSubmit()" class="form-content">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Fecha de Inicio</mat-label>
+      <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="minDate" [max]="maxDate">
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+      <mat-error *ngIf="vacationForm.get('startDate')?.hasError('required')">
+        La fecha de inicio es requerida
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Fecha de Fin</mat-label>
+      <input matInput [matDatepicker]="endPicker" formControlName="endDate" [min]="minDate" [max]="maxDate">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+      <mat-error *ngIf="vacationForm.get('endDate')?.hasError('required')">
+        La fecha de fin es requerida
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tipo de Vacaciones</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="ANNUAL">Vacaciones Anuales</mat-option>
+        <mat-option value="SICK">Enfermedad</mat-option>
+        <mat-option value="PERSONAL">Asuntos Personales</mat-option>
+        <mat-option value="OTHER">Otro</mat-option>
+      </mat-select>
+      <mat-error *ngIf="vacationForm.get('type')?.hasError('required')">
+        El tipo de vacaciones es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Motivo</mat-label>
+      <textarea matInput formControlName="reason" rows="4" placeholder="Describe el motivo de tu solicitud"></textarea>
+      <mat-error *ngIf="vacationForm.get('reason')?.hasError('required')">
+        El motivo es requerido
+      </mat-error>
+      <mat-error *ngIf="vacationForm.get('reason')?.hasError('minlength')">
+        El motivo debe tener al menos 10 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button mat-button type="button" routerLink="/users/profile">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="vacationForm.invalid || isLoading">
+        {{ isLoading ? 'Enviando...' : 'Solicitar Vacaciones' }}
+      </button>
+    </div>
+  </form>
+</div>

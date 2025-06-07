@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CheckinService } from '../../core/services/checkin.service';
 import { ToastrService } from 'ngx-toastr';
 import { Checkin } from '../../core/models/checkin';
+import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-checkin-form',
@@ -16,7 +19,8 @@ export class CheckinFormComponent implements OnInit {
 
   constructor(
     private checkinService: CheckinService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -26,18 +30,29 @@ export class CheckinFormComponent implements OnInit {
   // Carga los fichajes de hoy para el usuario actual
   loadTodayCheckins(): void {
     this.isLoading = true;
-    this.checkinService.listAll().subscribe({
-      next: (allCheckins) => {
-        // Filtramos solo los de hoy del usuario (backend debería devolver solo suyos si no rol manager)
+    this.checkinService
+      .listAll()
+      .pipe(
+        catchError((error) => {
+          this.isLoading = false;
+          if (error.status === 401) {
+            this.toastr.error('Sesión expirada', 'Error de autenticación');
+            this.router.navigate(['/login']);
+          } else {
+            this.toastr.error('Error al cargar fichajes', 'Error');
+          }
+          return of([]);
+        })
+      )
+      .subscribe((checkins) => {
+        // Filtramos solo los de hoy del usuario
         const today = new Date();
-        this.todayCheckins = allCheckins.filter((c) => {
+        this.todayCheckins = checkins.filter((c) => {
           const ts = new Date(c.timestamp);
           return (
             ts.getFullYear() === today.getFullYear() &&
             ts.getMonth() === today.getMonth() &&
-            ts.getDate() === today.getDate() &&
-            // y que el user sea el nuestro. Suponemos que el backend ya filtró
-            true
+            ts.getDate() === today.getDate()
           );
         });
         // Orden descendente de timestamp
@@ -49,17 +64,12 @@ export class CheckinFormComponent implements OnInit {
           ? this.todayCheckins[0]
           : null;
         this.isLoading = false;
-      },
-      error: () => {
-        this.isLoading = false;
-        this.toastr.error('Error al cargar fichajes', 'Error');
-      },
-    });
+      });
   }
 
   // Marcar entrada o salida
   mark(type: 'IN' | 'OUT'): void {
-    // Regla: no permitir “OUT” si el último no fue “IN” pendiente de salida
+    // Regla: no permitir "OUT" si el último no fue "IN" pendiente de salida
     if (
       type === 'OUT' &&
       (!this.lastCheckin || this.lastCheckin.type !== 'IN')
@@ -71,22 +81,30 @@ export class CheckinFormComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this.checkinService.create(type).subscribe({
-      next: (newCheckin) => {
-        this.toastr.success(
-          `Fichaje ${type === 'IN' ? 'Entrada' : 'Salida'} registrado.`,
-          'Éxito'
-        );
-        this.loadTodayCheckins();
-      },
-      error: (err) => {
-        this.isLoading = false;
-        if (err.error?.error) {
-          this.toastr.error(err.error.error, 'Error al fichar');
-        } else {
-          this.toastr.error('Error del servidor', 'Error al fichar');
+    this.checkinService
+      .create(type)
+      .pipe(
+        catchError((error) => {
+          this.isLoading = false;
+          if (error.status === 401) {
+            this.toastr.error('Sesión expirada', 'Error de autenticación');
+            this.router.navigate(['/login']);
+          } else if (error.error?.error) {
+            this.toastr.error(error.error.error, 'Error al fichar');
+          } else {
+            this.toastr.error('Error del servidor', 'Error al fichar');
+          }
+          return of(null);
+        })
+      )
+      .subscribe((newCheckin) => {
+        if (newCheckin) {
+          this.toastr.success(
+            `Fichaje ${type === 'IN' ? 'Entrada' : 'Salida'} registrado.`,
+            'Éxito'
+          );
+          this.loadTodayCheckins();
         }
-      },
-    });
+      });
   }
 }

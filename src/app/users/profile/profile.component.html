@@ -1,7 +1,29 @@
 <div class="profile-container" *ngIf="user; else loadingTpl">
   <h2>Mi Perfil</h2>
 
+  <div class="profile-info">
+    <div class="user-avatar">
+      <img [src]="user.img || 'assets/default-avatar.png'" alt="Avatar" />
+    </div>
+
+    <div class="user-details">
+      <h3>{{ user.name }}</h3>
+      <p class="email">{{ user.email }}</p>
+      <p class="roles">
+        <span *ngFor="let role of user.roles" class="role-badge">
+          {{ role === 'USER_ROLE' ? 'Usuario' :
+          role === 'MANAGER_ROLE' ? 'Manager' :
+          role === 'ADMIN_ROLE' ? 'Administrador' : role }}
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
   <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <h3>Editar Perfil</h3>
+
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="name" />
@@ -30,6 +52,30 @@
       {{ isLoading ? "Guardando..." : "Guardar" }}
     </button>
   </form>
+
+  <mat-divider></mat-divider>
+
+  <div class="quick-actions">
+    <h3>Acciones Rápidas</h3>
+    <div class="action-buttons">
+      <button mat-raised-button color="accent" routerLink="/checkins">
+        <mat-icon>access_time</mat-icon>
+        Fichar Entrada/Salida
+      </button>
+      <button mat-raised-button color="primary" routerLink="/checkins/list">
+        <mat-icon>list</mat-icon>
+        Ver Fichajes
+      </button>
+      <button mat-raised-button color="warn" routerLink="/incidents">
+        <mat-icon>warning</mat-icon>
+        Reportar Incidencia
+      </button>
+      <button mat-raised-button color="primary" routerLink="/vacations">
+        <mat-icon>event</mat-icon>
+        Solicitar Vacaciones
+      </button>
+    </div>
+  </div>
 </div>
 
 <ng-template #loadingTpl>

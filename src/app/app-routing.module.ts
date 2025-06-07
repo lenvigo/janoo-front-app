@@ -12,7 +12,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+  { path: '', redirectTo: 'users/profile', pathMatch: 'full' },
 
   // --- Autenticación ---
   { path: 'auth/login', component: LoginComponent },
@@ -44,7 +44,23 @@ const routes: Routes = [
     data: { expectedRoles: ['MANAGER_ROLE', 'ADMIN_ROLE'] },
   },
 
-  { path: '**', redirectTo: 'auth/login' },
+  // --- Incidencias ---
+  {
+    path: 'incidents',
+    loadChildren: () =>
+      import('./incidents/incidents.module').then((m) => m.IncidentsModule),
+    canActivate: [AuthGuard],
+  },
+
+  // --- Vacaciones ---
+  {
+    path: 'vacations',
+    loadChildren: () =>
+      import('./vacations/vacations.module').then((m) => m.VacationsModule),
+    canActivate: [AuthGuard],
+  },
+
+  { path: '**', redirectTo: 'users/profile' },
 ];
 
 @NgModule({

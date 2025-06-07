@@ -1,30 +1,54 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpEvent,
-  HttpInterceptor,
-  HttpHandler,
+  HttpInterceptorFn,
+  HttpHandlerFn,
   HttpRequest,
+  HttpHeaders,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { inject } from '@angular/core';
 import { TokenStorageService } from '../services/token-storage.service';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  constructor(private tokenStorage: TokenStorageService) {}
+export const authInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn
+) => {
+  console.log('AuthInterceptor - Intercepting request:', req.url);
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const token = this.tokenStorage.getToken();
-    if (token) {
-      const authReq = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return next.handle(authReq);
-    }
-    return next.handle(req);
+  const tokenStorage = inject(TokenStorageService);
+  const token = tokenStorage.getToken();
+  console.log(
+    'AuthInterceptor - Token from storage:',
+    token ? 'Present' : 'Not found'
+  );
+
+  // No interceptar peticiones a /auth
+  if (req.url.includes('/auth')) {
+    console.log('AuthInterceptor - Skipping auth request');
+    return next(req);
   }
-}
+
+  if (token) {
+    // Crear nuevos headers manteniendo los headers existentes
+    const headers = new HttpHeaders({
+      ...Object.fromEntries(
+        req.headers.keys().map((key) => [key, req.headers.get(key) || ''])
+      ),
+      Authorization: `Bearer ${token}`,
+    });
+
+    const authReq = req.clone({
+      headers: headers,
+    });
+
+    console.log('AuthInterceptor - Request headers:', authReq.headers.keys());
+    console.log(
+      'AuthInterceptor - Authorization header:',
+      authReq.headers.get('Authorization')
+    );
+    return next(authReq);
+  }
+
+  console.log(
+    'AuthInterceptor - No token available, proceeding without auth header'
+  );
+  return next(req);
+};

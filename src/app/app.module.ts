@@ -11,9 +11,10 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CheckinsModule } from './checkins/checkins.module';
+import { IncidentsModule } from './incidents/incidents.module';
+import { VacationsModule } from './vacations/vacations.module';
 
 import { AppComponent } from './app.component';
-import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,15 +34,11 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     AuthModule, // Login / Register
     UsersModule, // Perfil / Lista de usuarios
     CheckinsModule, // Fichajes
+    IncidentsModule, // Incidencias
+    VacationsModule, // Vacaciones
     AppRoutingModule, // al final, para capturar RUTAS
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { TokenStorageService } from '../../core/services/token-storage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -18,7 +17,6 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private tokenStorage: TokenStorageService,
     private router: Router,
     private toastr: ToastrService
   ) {}
@@ -39,11 +37,10 @@ export class RegisterComponent implements OnInit {
     this.isLoading = true;
     const { name, email, password } = this.registerForm.value;
     this.authService.register(name, email, password).subscribe({
-      next: (data) => {
+      next: () => {
         this.isLoading = false;
-        this.tokenStorage.saveToken(data.token);
-        this.router.navigateByUrl('/checkins');
         this.toastr.success('Registro exitoso', 'Bienvenido');
+        // La redirección ya está manejada en el AuthService
       },
       error: (err) => {
         this.isLoading = false;

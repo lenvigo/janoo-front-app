@@ -40,8 +40,6 @@ export class LoginComponent implements OnInit {
     this.authService.login(email, password).subscribe({
       next: (data) => {
         this.isLoading = false;
-        this.tokenStorage.saveToken(data.token);
-        this.router.navigateByUrl('/checkins');
         this.toastr.success('Login successful', 'Bienvenido');
       },
       error: (err) => {
