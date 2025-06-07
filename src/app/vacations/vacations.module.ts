@@ -20,8 +20,8 @@ import { VacationFormComponent } from './vacation-form/vacation-form.component';
 import { VacationListComponent } from './vacation-list/vacation-list.component';
 
 const routes: Routes = [
-  { path: '', component: VacationFormComponent },
-  { path: 'list', component: VacationListComponent },
+  { path: '', component: VacationListComponent },
+  { path: 'new', component: VacationFormComponent },
 ];
 
 @NgModule({
@@ -43,7 +43,6 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
-    RouterModule,
   ],
   exports: [VacationFormComponent, VacationListComponent],
 })

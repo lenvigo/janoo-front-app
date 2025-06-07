@@ -1,5 +1,5 @@
 .vacation-form-container {
-  max-width: 800px;
+  max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
   background-color: white;
@@ -41,4 +41,25 @@ textarea {
 
 .mat-datepicker-toggle {
   color: rgba(0, 0, 0, 0.54);
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: 1px solid #ef9a9a;
+  font-size: 0.9rem;
+
+  mat-icon {
+    color: #c62828;
+  }
+
+  span {
+    flex: 1;
+  }
 }

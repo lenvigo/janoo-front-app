@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CheckinService } from '../../core/services/checkin.service';
 import { ToastrService } from 'ngx-toastr';
 import { Checkin } from '../../core/models/checkin';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-checkin-form',
@@ -12,10 +12,11 @@ import { of } from 'rxjs';
   templateUrl: './checkin-form.component.html',
   styleUrls: ['./checkin-form.component.scss'],
 })
-export class CheckinFormComponent implements OnInit {
+export class CheckinFormComponent implements OnInit, OnDestroy {
   lastCheckin: Checkin | null = null;
   todayCheckins: Checkin[] = [];
   isLoading = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private checkinService: CheckinService,
@@ -27,49 +28,51 @@ export class CheckinFormComponent implements OnInit {
     this.loadTodayCheckins();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   // Carga los fichajes de hoy para el usuario actual
   loadTodayCheckins(): void {
     this.isLoading = true;
     this.checkinService
       .listAll()
-      .pipe(
-        catchError((error) => {
-          this.isLoading = false;
-          if (error.status === 401) {
-            this.toastr.error('Sesión expirada', 'Error de autenticación');
-            this.router.navigate(['/login']);
-          } else {
-            this.toastr.error('Error al cargar fichajes', 'Error');
-          }
-          return of([]);
-        })
-      )
-      .subscribe((checkins) => {
-        // Filtramos solo los de hoy del usuario
-        const today = new Date();
-        this.todayCheckins = checkins.filter((c) => {
-          const ts = new Date(c.timestamp);
-          return (
-            ts.getFullYear() === today.getFullYear() &&
-            ts.getMonth() === today.getMonth() &&
-            ts.getDate() === today.getDate()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (checkins) => {
+          const today = new Date();
+          this.todayCheckins = checkins.filter((c) => {
+            const ts = new Date(c.timestamp);
+            return (
+              ts.getFullYear() === today.getFullYear() &&
+              ts.getMonth() === today.getMonth() &&
+              ts.getDate() === today.getDate()
+            );
+          });
+          this.todayCheckins.sort(
+            (a, b) =>
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
           );
-        });
-        // Orden descendente de timestamp
-        this.todayCheckins.sort(
-          (a, b) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-        );
-        this.lastCheckin = this.todayCheckins.length
-          ? this.todayCheckins[0]
-          : null;
-        this.isLoading = false;
+          this.lastCheckin = this.todayCheckins.length
+            ? this.todayCheckins[0]
+            : null;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.toastr.error(error.message, 'Error');
+          if (error.message.includes('Sesión expirada')) {
+            this.router.navigate(['/login']);
+          }
+        },
       });
   }
 
   // Marcar entrada o salida
   mark(type: 'IN' | 'OUT'): void {
-    // Regla: no permitir "OUT" si el último no fue "IN" pendiente de salida
+    if (this.isLoading) return;
+
     if (
       type === 'OUT' &&
       (!this.lastCheckin || this.lastCheckin.type !== 'IN')
@@ -80,31 +83,26 @@ export class CheckinFormComponent implements OnInit {
       );
       return;
     }
+
     this.isLoading = true;
     this.checkinService
       .create(type)
-      .pipe(
-        catchError((error) => {
-          this.isLoading = false;
-          if (error.status === 401) {
-            this.toastr.error('Sesión expirada', 'Error de autenticación');
-            this.router.navigate(['/login']);
-          } else if (error.error?.error) {
-            this.toastr.error(error.error.error, 'Error al fichar');
-          } else {
-            this.toastr.error('Error del servidor', 'Error al fichar');
-          }
-          return of(null);
-        })
-      )
-      .subscribe((newCheckin) => {
-        if (newCheckin) {
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (newCheckin) => {
           this.toastr.success(
             `Fichaje ${type === 'IN' ? 'Entrada' : 'Salida'} registrado.`,
             'Éxito'
           );
           this.loadTodayCheckins();
-        }
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.toastr.error(error.message, 'Error');
+          if (error.message.includes('Sesión expirada')) {
+            this.router.navigate(['/login']);
+          }
+        },
       });
   }
 }

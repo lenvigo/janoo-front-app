@@ -26,6 +26,10 @@ export class AuthService {
     );
   }
 
+  getToken(): string | null {
+    return this.tokenStorage.getToken();
+  }
+
   login(email: string, password: string): Observable<LoginResponse> {
     console.log('AuthService - Attempting login for:', email);
     return this.http

@@ -4,14 +4,15 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface Incident {
-  id: number;
+  id: string;
+  userId: string;
   title: string;
   description: string;
-  type: 'HARDWARE' | 'SOFTWARE' | 'NETWORK' | 'OTHER';
-  priority: 'URGENT' | 'HIGH' | 'MEDIUM' | 'LOW';
-  status: 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+  status: 'OPEN' | 'RESOLVED' | 'CLOSED';
   createdAt: Date;
-  updatedAt: Date;
+  resolvedAt?: Date;
+  managerId?: string;
+  managerComment?: string;
 }
 
 @Injectable({
@@ -26,24 +27,24 @@ export class IncidentService {
     return this.http.get<Incident[]>(this.apiUrl);
   }
 
-  getIncident(id: number): Observable<Incident> {
+  getIncident(id: string): Observable<Incident> {
     return this.http.get<Incident>(`${this.apiUrl}/${id}`);
   }
 
-  createIncident(
-    incident: Omit<Incident, 'id' | 'createdAt' | 'updatedAt'>
-  ): Observable<Incident> {
+  createIncident(incident: {
+    title: string;
+    description: string;
+  }): Observable<Incident> {
     return this.http.post<Incident>(this.apiUrl, incident);
   }
 
-  updateIncident(
-    id: number,
-    incident: Partial<Incident>
-  ): Observable<Incident> {
-    return this.http.put<Incident>(`${this.apiUrl}/${id}`, incident);
+  resolveIncident(id: string, managerComment?: string): Observable<Incident> {
+    return this.http.patch<Incident>(`${this.apiUrl}/${id}/resolve`, {
+      managerComment,
+    });
   }
 
-  closeIncident(id: number): Observable<Incident> {
+  closeIncident(id: string): Observable<Incident> {
     return this.http.patch<Incident>(`${this.apiUrl}/${id}/close`, {});
   }
 }

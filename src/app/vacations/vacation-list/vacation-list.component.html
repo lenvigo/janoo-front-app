@@ -1,7 +1,7 @@
 <div class="vacation-list-container">
   <div class="header">
     <h2>Mis Solicitudes de Vacaciones</h2>
-    <button mat-raised-button color="primary" routerLink="/vacations">
+    <button mat-raised-button color="primary" (click)="createVacation()">
       <mat-icon>add</mat-icon>
       Nueva Solicitud
     </button>
@@ -17,19 +17,13 @@
       <!-- Fecha de Inicio -->
       <ng-container matColumnDef="startDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Inicio</th>
-        <td mat-cell *matCellDef="let vacation">{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
+        <td mat-cell *matCellDef="let vacation">{{formatDate(vacation.startDate)}}</td>
       </ng-container>
 
       <!-- Fecha de Fin -->
       <ng-container matColumnDef="endDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Fin</th>
-        <td mat-cell *matCellDef="let vacation">{{vacation.endDate | date:'dd/MM/yyyy'}}</td>
-      </ng-container>
-
-      <!-- Tipo -->
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
-        <td mat-cell *matCellDef="let vacation">{{getTypeText(vacation.type)}}</td>
+        <td mat-cell *matCellDef="let vacation">{{formatDate(vacation.endDate)}}</td>
       </ng-container>
 
       <!-- Motivo -->
@@ -51,7 +45,7 @@
       <!-- Fecha de Solicitud -->
       <ng-container matColumnDef="createdAt">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Solicitado</th>
-        <td mat-cell *matCellDef="let vacation">{{vacation.createdAt | date:'dd/MM/yyyy'}}</td>
+        <td mat-cell *matCellDef="let vacation">{{formatDate(vacation.createdAt)}}</td>
       </ng-container>
 
       <!-- Acciones -->
@@ -70,7 +64,7 @@
 
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="7">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+        <td class="mat-cell" colspan="6">No hay datos que coincidan con el filtro "{{input.value}}"</td>
       </tr>
     </table>
 

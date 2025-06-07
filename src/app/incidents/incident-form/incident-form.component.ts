@@ -1,33 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { IncidentService } from '../../core/services/incident.service';
 
 @Component({
   selector: 'app-incident-form',
+  standalone: false,
   templateUrl: './incident-form.component.html',
   styleUrls: ['./incident-form.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-  ],
 })
 export class IncidentFormComponent implements OnInit {
   incidentForm!: FormGroup;
@@ -36,7 +17,8 @@ export class IncidentFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private incidentService: IncidentService
   ) {}
 
   ngOnInit(): void {
@@ -62,14 +44,24 @@ export class IncidentFormComponent implements OnInit {
     }
 
     this.isLoading = true;
-    // TODO: Implementar el servicio de incidencias
-    console.log('Formulario de incidencia:', this.incidentForm.value);
+    this.incidentService.createIncident(this.incidentForm.value).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.toastr.success('Incidencia reportada correctamente', 'Éxito');
+        this.router.navigate(['/incidents']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Error al crear la incidencia:', error);
+        this.toastr.error(
+          'Error al reportar la incidencia. Por favor, inténtalo de nuevo.',
+          'Error'
+        );
+      },
+    });
+  }
 
-    // Simulación de envío
-    setTimeout(() => {
-      this.isLoading = false;
-      this.toastr.success('Incidencia reportada correctamente', 'Éxito');
-      this.router.navigate(['/users/profile']);
-    }, 1000);
+  cancel(): void {
+    this.router.navigate(['/incidents']);
   }
 }

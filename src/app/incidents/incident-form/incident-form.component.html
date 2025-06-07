@@ -1,7 +1,7 @@
 <div class="incident-form-container">
   <h2>Reportar Incidencia</h2>
 
-  <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()" class="form-content">
+  <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()" class="incident-form">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Título</mat-label>
       <input matInput formControlName="title" placeholder="Título de la incidencia">
@@ -49,9 +49,10 @@
     </mat-form-field>
 
     <div class="form-actions">
-      <button mat-button type="button" routerLink="/users/profile">Cancelar</button>
+      <button mat-button type="button" (click)="cancel()">Cancelar</button>
       <button mat-raised-button color="primary" type="submit" [disabled]="incidentForm.invalid || isLoading">
-        {{ isLoading ? 'Enviando...' : 'Reportar Incidencia' }}
+        <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+        <span *ngIf="!isLoading">Reportar Incidencia</span>
       </button>
     </div>
   </form>

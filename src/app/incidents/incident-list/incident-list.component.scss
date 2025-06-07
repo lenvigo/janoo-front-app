@@ -7,7 +7,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 20px;
 
     h2 {
       margin: 0;
@@ -16,9 +16,9 @@
   }
 }
 
-.filter-field {
+.search-field {
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
 
 .table-container {
@@ -26,71 +26,42 @@
   min-height: 200px;
   max-height: 600px;
   overflow: auto;
-  background: white;
-  border-radius: 8px;
 }
 
 table {
   width: 100%;
 }
 
-.mat-mdc-row .mat-mdc-cell {
-  border-bottom: 1px solid transparent;
-  border-top: 1px solid transparent;
-  cursor: pointer;
+.mat-column-actions {
+  width: 120px;
+  text-align: center;
 }
 
-.mat-mdc-row:hover .mat-mdc-cell {
-  border-color: currentColor;
-  background: #f5f5f5;
+.mat-column-status {
+  width: 120px;
 }
 
-.status-badge,
-.priority-badge {
+.status-badge {
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
-}
+  text-transform: uppercase;
 
-.status-pending {
-  background-color: #fff3cd;
-  color: #856404;
-}
+  &.open {
+    background-color: #ffebee;
+    color: #c62828;
+  }
 
-.status-progress {
-  background-color: #cce5ff;
-  color: #004085;
-}
+  &.resolved {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
 
-.status-resolved {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.status-closed {
-  background-color: #e2e3e5;
-  color: #383d41;
-}
-
-.priority-urgent {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.priority-high {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.priority-medium {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.priority-low {
-  background-color: #d4edda;
-  color: #155724;
+  &.closed {
+    background-color: #eceff1;
+    color: #455a64;
+  }
 }
 
 .loading-shade {
@@ -106,25 +77,9 @@ table {
   justify-content: center;
 }
 
-.mat-column-actions {
-  width: 100px;
-  text-align: center;
-}
-
-.mat-column-status,
-.mat-column-priority {
-  width: 120px;
-}
-
-.mat-column-type {
-  width: 120px;
-}
-
-.mat-column-createdAt,
-.mat-column-updatedAt {
-  width: 120px;
-}
-
-.mat-column-title {
-  min-width: 200px;
+.mat-column-description {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -1,54 +1,42 @@
+import { Injectable } from '@angular/core';
 import {
-  HttpInterceptorFn,
-  HttpHandlerFn,
   HttpRequest,
-  HttpHeaders,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { TokenStorageService } from '../services/token-storage.service';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
-export const authInterceptor: HttpInterceptorFn = (
-  req: HttpRequest<unknown>,
-  next: HttpHandlerFn
-) => {
-  console.log('AuthInterceptor - Intercepting request:', req.url);
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(private authService: AuthService, private router: Router) {}
 
-  const tokenStorage = inject(TokenStorageService);
-  const token = tokenStorage.getToken();
-  console.log(
-    'AuthInterceptor - Token from storage:',
-    token ? 'Present' : 'Not found'
-  );
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
+    const token = this.authService.getToken();
 
-  // No interceptar peticiones a /auth
-  if (req.url.includes('/auth')) {
-    console.log('AuthInterceptor - Skipping auth request');
-    return next(req);
-  }
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
 
-  if (token) {
-    // Crear nuevos headers manteniendo los headers existentes
-    const headers = new HttpHeaders({
-      ...Object.fromEntries(
-        req.headers.keys().map((key) => [key, req.headers.get(key) || ''])
-      ),
-      Authorization: `Bearer ${token}`,
-    });
-
-    const authReq = req.clone({
-      headers: headers,
-    });
-
-    console.log('AuthInterceptor - Request headers:', authReq.headers.keys());
-    console.log(
-      'AuthInterceptor - Authorization header:',
-      authReq.headers.get('Authorization')
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.authService.logout();
+          this.router.navigate(['/auth/login']);
+        }
+        return throwError(() => error);
+      })
     );
-    return next(authReq);
   }
-
-  console.log(
-    'AuthInterceptor - No token available, proceeding without auth header'
-  );
-  return next(req);
-};
+}

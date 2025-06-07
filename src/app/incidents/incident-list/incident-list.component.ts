@@ -1,48 +1,27 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import {
   IncidentService,
   Incident,
 } from '../../core/services/incident.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-incident-list',
+  standalone: false,
   templateUrl: './incident-list.component.html',
   styleUrls: ['./incident-list.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-  ],
 })
 export class IncidentListComponent implements OnInit {
   displayedColumns: string[] = [
     'title',
-    'type',
-    'priority',
+    'description',
     'status',
     'createdAt',
-    'updatedAt',
+    'resolvedAt',
     'actions',
   ];
   dataSource: MatTableDataSource<Incident>;
@@ -75,6 +54,7 @@ export class IncidentListComponent implements OnInit {
       error: (error) => {
         console.error('Error loading incidents:', error);
         this.isLoading = false;
+        this.toastr.error('Error al cargar las incidencias', 'Error');
       },
     });
   }
@@ -139,7 +119,20 @@ export class IncidentListComponent implements OnInit {
     this.router.navigate(['/incidents', id]);
   }
 
-  closeIncident(id: number): void {
+  resolveIncident(id: string): void {
+    this.incidentService.resolveIncident(id).subscribe({
+      next: () => {
+        this.loadIncidents();
+        this.toastr.success('Incidencia resuelta correctamente', 'Éxito');
+      },
+      error: (error) => {
+        console.error('Error resolving incident:', error);
+        this.toastr.error('Error al resolver la incidencia', 'Error');
+      },
+    });
+  }
+
+  closeIncident(id: string): void {
     this.incidentService.closeIncident(id).subscribe({
       next: () => {
         this.loadIncidents();
@@ -147,6 +140,7 @@ export class IncidentListComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error closing incident:', error);
+        this.toastr.error('Error al cerrar la incidencia', 'Error');
       },
     });
   }
