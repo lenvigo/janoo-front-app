@@ -55,7 +55,7 @@ export class ProfileComponent implements OnInit {
         this.profileForm.patchValue({
           name: user.name,
           email: user.email,
-          img: user.img || '',
+          img: user.img || 'assets/default-avatar.png',
         });
       },
       error: (error) => {

@@ -43,8 +43,8 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
-    VacationFormComponent,
-    VacationListComponent,
+    RouterModule,
   ],
+  exports: [VacationFormComponent, VacationListComponent],
 })
 export class VacationsModule {}

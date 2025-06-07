@@ -2,7 +2,7 @@
   <h2>Solicitar Vacaciones</h2>
 
   <form [formGroup]="vacationForm" (ngSubmit)="onSubmit()" class="form-content">
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Fecha de Inicio</mat-label>
       <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="minDate" [max]="maxDate">
       <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -12,7 +12,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Fecha de Fin</mat-label>
       <input matInput [matDatepicker]="endPicker" formControlName="endDate" [min]="minDate" [max]="maxDate">
       <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
@@ -22,7 +22,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Tipo de Vacaciones</mat-label>
       <mat-select formControlName="type">
         <mat-option value="ANNUAL">Vacaciones Anuales</mat-option>
@@ -35,7 +35,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Motivo</mat-label>
       <textarea matInput formControlName="reason" rows="4" placeholder="Describe el motivo de tu solicitud"></textarea>
       <mat-error *ngIf="vacationForm.get('reason')?.hasError('required')">

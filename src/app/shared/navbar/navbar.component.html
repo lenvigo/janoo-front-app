@@ -1,12 +1,18 @@
 <mat-toolbar color="primary">
-  <span class="app-title" routerLink="/">Janoo-Fichajes</span>
+  <span class="app-title" routerLink="/">Janoo</span>
   <span class="spacer"></span>
 
-  <button mat-button routerLink="/users/profile">Perfil</button>
-  <button mat-button routerLink="/checkins">Fichar</button>
-  <button mat-button routerLink="/checkins/list">Ver Fichajes</button>
-  <button mat-button routerLink="/users">Usuarios</button>
-  <button mat-icon-button (click)="logout()">
-    <mat-icon>logout</mat-icon>
-  </button>
+  <div class="nav-buttons">
+    <button mat-button routerLink="/users/profile">Perfil</button>
+    <button mat-button routerLink="/checkins">Fichar</button>
+    <button mat-button routerLink="/incidents">Incidencias</button>
+    <button mat-button routerLink="/vacations">Vacaciones</button>
+    <!-- <button mat-button routerLink="/users">Usuarios</button> -->
+    <!-- <button mat-button routerLink="/checkins/list">Ver Fichajes</button> -->
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+
+
 </mat-toolbar>

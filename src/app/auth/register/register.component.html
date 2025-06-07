@@ -1,7 +1,7 @@
 <div class="auth-container">
   <h2>Registro</h2>
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="name" placeholder="Tu nombre" />
       <mat-error *ngIf="registerForm.get('name')?.hasError('required')">
@@ -9,7 +9,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" placeholder="you@example.com" />
       <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
@@ -20,7 +20,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Contraseña</mat-label>
       <input matInput type="password" formControlName="password" placeholder="******" />
       <mat-error *ngIf="registerForm.get('password')?.hasError('required')">

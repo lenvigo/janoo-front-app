@@ -2,7 +2,7 @@
   <h2>Reportar Incidencia</h2>
 
   <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()" class="form-content">
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Título</mat-label>
       <input matInput formControlName="title" placeholder="Título de la incidencia">
       <mat-error *ngIf="incidentForm.get('title')?.hasError('required')">
@@ -13,7 +13,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Descripción</mat-label>
       <textarea matInput formControlName="description" rows="4"
         placeholder="Describe la incidencia en detalle"></textarea>
@@ -25,7 +25,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Tipo de Incidencia</mat-label>
       <mat-select formControlName="type">
         <mat-option value="TECHNICAL">Técnica</mat-option>
@@ -38,7 +38,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Prioridad</mat-label>
       <mat-select formControlName="priority">
         <mat-option value="LOW">Baja</mat-option>

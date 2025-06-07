@@ -2,11 +2,53 @@
 //@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 //@import "~ngx-toastr/toastr.css";
 
+@use "@angular/material" as mat;
+
 html,
 body {
   height: 100%;
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$chartreuse-palette,
+        tertiary: mat.$orange-palette,
+        theme-type: light,
+      ),
+      typography: Verdana,
+      density: -2,
+    )
+  );
+
+  @include mat.select-overrides(
+    (
+      panel-background-color: rgb(231, 225, 225),
+      enabled-trigger-text-color: rgb(9, 22, 15),
+    )
+  );
+}
+
+/* Para navegadores basados en WebKit (Chrome, Safari, Edge) */
+input:-webkit-autofill,
+select:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset !important; /* Oculta el color */
+  -webkit-text-fill-color: #000 !important; /* Asegura que el texto sea visible */
+}
+
+/* Para navegadores Gecko (Firefox) */
+input:-moz-autofill,
+select:-moz-autofill,
+textarea:-moz-autofill {
+  background-color: #fff !important; /* Oculta el color */
+  -moz-box-shadow: 0 0 0px 1000px #fff inset !important;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper {
+  min-height: 3em;
 }
