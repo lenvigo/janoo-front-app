@@ -1,4 +1,6 @@
 .incident-list-container {
+  max-width: 800px;
+  margin: 2rem auto;
   padding: 2rem;
   position: relative;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -26,6 +28,7 @@
   min-height: 200px;
   max-height: 600px;
   overflow: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 table {

@@ -24,7 +24,7 @@
     <ng-container matColumnDef="timestamp">
       <th mat-header-cell *matHeaderCellDef> Fecha/Hora </th>
       <td mat-cell *matCellDef="let chk">
-        {{ chk.timestamp | date: "short" }}
+        {{ chk.timestamp | date: 'dd/MM/yyyy HH:mm' }}
       </td>
     </ng-container>
 

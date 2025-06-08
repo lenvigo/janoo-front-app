@@ -24,7 +24,7 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
-      timeOut: 3000,
+      timeOut: 6000,
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
     }),

@@ -43,6 +43,11 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: { expectedRoles: ['MANAGER_ROLE', 'ADMIN_ROLE'] },
   },
+  {
+    path: 'checkins/history',
+    component: CheckinListComponent,
+    canActivate: [AuthGuard],
+  },
 
   // --- Incidencias ---
   {
