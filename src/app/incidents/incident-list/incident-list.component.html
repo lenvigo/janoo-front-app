@@ -20,7 +20,7 @@
       <ng-container matColumnDef="user">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
         <td mat-cell *matCellDef="let incident">
-          {{ usersMap[incident.userId]?.name || 'Desconocido' }}
+          {{ usersMap[incident.userId].name || 'Desconocido' }}
         </td>
       </ng-container>
 
