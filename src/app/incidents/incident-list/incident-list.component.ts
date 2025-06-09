@@ -3,11 +3,16 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import {
   IncidentService,
   Incident,
 } from '../../core/services/incident.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../core/services/auth.service';
+import { ResolveIncidentDialogComponent } from './resolve-incident-dialog/resolve-incident-dialog.component';
+import { User } from '../../core/models/user';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-incident-list',
@@ -16,7 +21,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./incident-list.component.scss'],
 })
 export class IncidentListComponent implements OnInit {
+  usersMap: { [id: string]: User } = {};
   displayedColumns: string[] = [
+    'user',
     'title',
     'description',
     'status',
@@ -26,6 +33,8 @@ export class IncidentListComponent implements OnInit {
   ];
   dataSource: MatTableDataSource<Incident>;
   isLoading = false;
+  isManager = false;
+  isAdmin = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -33,13 +42,32 @@ export class IncidentListComponent implements OnInit {
   constructor(
     private incidentService: IncidentService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialog: MatDialog,
+    private authService: AuthService,
+    private userService: UserService
   ) {
     this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit(): void {
+    this.checkUserRoles();
     this.loadIncidents();
+
+    this.userService.getAllUsers().subscribe((users) => {
+      this.usersMap = {};
+      users.forEach((user) => {
+        this.usersMap[user.id] = user;
+      });
+    });
+  }
+
+  private checkUserRoles(): void {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.isManager = user.roles.includes('MANAGER_ROLE');
+      this.isAdmin = user.roles.includes('ADMIN_ROLE');
+    }
   }
 
   loadIncidents(): void {
@@ -54,7 +82,6 @@ export class IncidentListComponent implements OnInit {
       error: (error) => {
         console.error('Error loading incidents:', error);
         this.isLoading = false;
-        this.toastr.error('Error al cargar las incidencias', 'Error');
       },
     });
   }
@@ -74,78 +101,42 @@ export class IncidentListComponent implements OnInit {
 
   getStatusText(status: string): string {
     switch (status) {
-      case 'IN_PROGRESS':
-        return 'En Progreso';
       case 'RESOLVED':
         return 'Resuelto';
-      case 'CLOSED':
-        return 'Cerrado';
       default:
         return 'Pendiente';
     }
   }
 
-  getPriorityClass(priority: string): string {
-    return `priority-${priority.toLowerCase()}`;
+  openResolveDialog(incident: Incident): void {
+    const dialogRef = this.dialog.open(ResolveIncidentDialogComponent, {
+      data: { incident },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.resolveIncident(incident.id, result);
+      }
+    });
   }
 
-  getPriorityText(priority: string): string {
-    switch (priority) {
-      case 'URGENT':
-        return 'Urgente';
-      case 'HIGH':
-        return 'Alta';
-      case 'MEDIUM':
-        return 'Media';
-      default:
-        return 'Baja';
-    }
-  }
-
-  getTypeText(type: string): string {
-    switch (type) {
-      case 'HARDWARE':
-        return 'Hardware';
-      case 'SOFTWARE':
-        return 'Software';
-      case 'NETWORK':
-        return 'Red';
-      default:
-        return 'Otro';
-    }
-  }
-
-  viewIncident(id: number): void {
-    this.router.navigate(['/incidents', id]);
-  }
-
-  resolveIncident(id: string): void {
-    this.incidentService.resolveIncident(id).subscribe({
+  resolveIncident(id: string, managerComment: string): void {
+    this.incidentService.resolveIncident(id, managerComment).subscribe({
       next: () => {
         this.loadIncidents();
         this.toastr.success('Incidencia resuelta correctamente', 'Éxito');
       },
       error: (error) => {
         console.error('Error resolving incident:', error);
-        this.toastr.error('Error al resolver la incidencia', 'Error');
-      },
-    });
-  }
-
-  closeIncident(id: string): void {
-    this.incidentService.closeIncident(id).subscribe({
-      next: () => {
-        this.loadIncidents();
-        this.toastr.success('Incidencia cerrada correctamente', 'Éxito');
-      },
-      error: (error) => {
-        console.error('Error closing incident:', error);
-        this.toastr.error('Error al cerrar la incidencia', 'Error');
       },
     });
   }
 
   createIncident(): void {
     this.router.navigate(['/incidents/new']);
+  }
+
+  canManageIncidents(): boolean {
+    return this.isManager || this.isAdmin;
   }
 }

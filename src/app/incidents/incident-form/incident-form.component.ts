@@ -13,6 +13,18 @@ import { IncidentService } from '../../core/services/incident.service';
 export class IncidentFormComponent implements OnInit {
   incidentForm!: FormGroup;
   isLoading = false;
+  priorities = [
+    { value: 'LOW', label: 'Baja' },
+    { value: 'MEDIUM', label: 'Media' },
+    { value: 'HIGH', label: 'Alta' },
+    { value: 'URGENT', label: 'Urgente' },
+  ];
+  types = [
+    { value: 'TECHNICAL', label: 'Técnica' },
+    { value: 'HUMAN_RESOURCES', label: 'Recursos Humanos' },
+    { value: 'FACILITIES', label: 'Instalaciones' },
+    { value: 'OTHER', label: 'Otro' },
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -27,15 +39,48 @@ export class IncidentFormComponent implements OnInit {
 
   private initForm(): void {
     this.incidentForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(5)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
-      type: ['', Validators.required],
-      priority: ['MEDIUM', Validators.required],
+      title: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(100),
+        ],
+      ],
+      description: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(500),
+        ],
+      ],
+      type: ['', [Validators.required]],
+      priority: ['MEDIUM', [Validators.required]],
     });
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.incidentForm.get(controlName);
+    if (!control) return '';
+
+    if (control.hasError('required')) {
+      return 'Este campo es requerido';
+    }
+    if (control.hasError('minlength')) {
+      const requiredLength = control.errors?.['minlength'].requiredLength;
+      return `Debe tener al menos ${requiredLength} caracteres`;
+    }
+    if (control.hasError('maxlength')) {
+      const requiredLength = control.errors?.['maxlength'].requiredLength;
+      return `No debe exceder ${requiredLength} caracteres`;
+    }
+    return '';
   }
 
   onSubmit(): void {
     if (this.incidentForm.invalid) {
+      this.markFormGroupTouched(this.incidentForm);
       this.toastr.error(
         'Por favor, completa todos los campos correctamente',
         'Error'
@@ -44,7 +89,7 @@ export class IncidentFormComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.incidentService.createIncident(this.incidentForm.value).subscribe({
+    this.incidentService.reportIncident(this.incidentForm.value).subscribe({
       next: () => {
         this.isLoading = false;
         this.toastr.success('Incidencia reportada correctamente', 'Éxito');
@@ -53,15 +98,34 @@ export class IncidentFormComponent implements OnInit {
       error: (error) => {
         this.isLoading = false;
         console.error('Error al crear la incidencia:', error);
-        this.toastr.error(
-          'Error al reportar la incidencia. Por favor, inténtalo de nuevo.',
-          'Error'
-        );
+        const errorMessage =
+          error.error?.message ||
+          'Error al reportar la incidencia. Por favor, inténtalo de nuevo.';
+        this.toastr.error(errorMessage, 'Error');
       },
     });
   }
 
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach((control) => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
   cancel(): void {
-    this.router.navigate(['/incidents']);
+    if (this.incidentForm.dirty) {
+      if (
+        confirm(
+          '¿Estás seguro de que deseas cancelar? Los cambios no guardados se perderán.'
+        )
+      ) {
+        this.router.navigate(['/incidents']);
+      }
+    } else {
+      this.router.navigate(['/incidents']);
+    }
   }
 }

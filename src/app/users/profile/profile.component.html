@@ -21,6 +21,23 @@
 
   <mat-divider></mat-divider>
 
+  <!-- Sección de Administrador -->
+  <div class="admin-section" *ngIf="user.roles.includes('ADMIN_ROLE')">
+    <h3>Panel de Administración</h3>
+    <div class="admin-actions">
+      <button mat-raised-button color="primary" routerLink="/role-management">
+        <mat-icon>admin_panel_settings</mat-icon>
+        Panel de Administración
+      </button>
+      <button mat-raised-button color="accent" routerLink="/list">
+        <mat-icon>people</mat-icon>
+        Gestionar Usuarios
+      </button>
+    </div>
+  </div>
+
+  <mat-divider *ngIf="user.roles.includes('ADMIN_ROLE')"></mat-divider>
+
   <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
     <h3>Editar Perfil</h3>
 

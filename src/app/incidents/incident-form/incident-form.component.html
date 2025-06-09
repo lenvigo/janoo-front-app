@@ -4,53 +4,44 @@
   <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()" class="incident-form">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Título</mat-label>
-      <input matInput formControlName="title" placeholder="Título de la incidencia">
-      <mat-error *ngIf="incidentForm.get('title')?.hasError('required')">
-        El título es requerido
-      </mat-error>
-      <mat-error *ngIf="incidentForm.get('title')?.hasError('minlength')">
-        El título debe tener al menos 5 caracteres
-      </mat-error>
+      <input matInput formControlName="title" placeholder="Título de la incidencia"
+        [attr.aria-label]="'Título de la incidencia'" [attr.aria-required]="true">
+      <mat-error>{{getErrorMessage('title')}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Descripción</mat-label>
-      <textarea matInput formControlName="description" rows="4"
-        placeholder="Describe la incidencia en detalle"></textarea>
-      <mat-error *ngIf="incidentForm.get('description')?.hasError('required')">
-        La descripción es requerida
-      </mat-error>
-      <mat-error *ngIf="incidentForm.get('description')?.hasError('minlength')">
-        La descripción debe tener al menos 10 caracteres
-      </mat-error>
+      <textarea matInput formControlName="description" rows="4" placeholder="Describe la incidencia en detalle"
+        [attr.aria-label]="'Descripción de la incidencia'" [attr.aria-required]="true"></textarea>
+      <mat-error>{{getErrorMessage('description')}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Tipo de Incidencia</mat-label>
-      <mat-select formControlName="type">
-        <mat-option value="TECHNICAL">Técnica</mat-option>
-        <mat-option value="HUMAN_RESOURCES">Recursos Humanos</mat-option>
-        <mat-option value="FACILITIES">Instalaciones</mat-option>
-        <mat-option value="OTHER">Otro</mat-option>
+      <mat-select formControlName="type" [attr.aria-label]="'Tipo de incidencia'">
+        <mat-option *ngFor="let type of types" [value]="type.value">
+          {{type.label}}
+        </mat-option>
       </mat-select>
-      <mat-error *ngIf="incidentForm.get('type')?.hasError('required')">
-        El tipo de incidencia es requerido
-      </mat-error>
+      <mat-error>{{getErrorMessage('type')}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Prioridad</mat-label>
-      <mat-select formControlName="priority">
-        <mat-option value="LOW">Baja</mat-option>
-        <mat-option value="MEDIUM">Media</mat-option>
-        <mat-option value="HIGH">Alta</mat-option>
-        <mat-option value="URGENT">Urgente</mat-option>
+      <mat-select formControlName="priority" [attr.aria-label]="'Prioridad de la incidencia'">
+        <mat-option *ngFor="let priority of priorities" [value]="priority.value">
+          {{priority.label}}
+        </mat-option>
       </mat-select>
+      <mat-error>{{getErrorMessage('priority')}}</mat-error>
     </mat-form-field>
 
     <div class="form-actions">
-      <button mat-button type="button" (click)="cancel()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="incidentForm.invalid || isLoading">
+      <button mat-button type="button" (click)="cancel()" [disabled]="isLoading">
+        Cancelar
+      </button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="incidentForm.invalid || isLoading"
+        [attr.aria-busy]="isLoading">
         <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
         <span *ngIf="!isLoading">Reportar Incidencia</span>
       </button>

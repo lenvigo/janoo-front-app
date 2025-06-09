@@ -1,18 +1,45 @@
-<mat-toolbar color="primary">
-  <span class="app-title" routerLink="/">Janoo</span>
+<mat-toolbar color="primary" role="navigation" aria-label="Navegación principal">
+  <span class="app-title" routerLink="/" role="link" tabindex="0" aria-label="Ir a inicio">Janoo</span>
   <span class="spacer"></span>
 
-  <div class="nav-buttons">
-    <button mat-button routerLink="/users/profile">Perfil</button>
-    <button mat-button routerLink="/checkins">Fichar</button>
-    <button mat-button routerLink="/incidents">Incidencias</button>
-    <button mat-button routerLink="/vacations">Vacaciones</button>
-    <!-- <button mat-button routerLink="/users">Usuarios</button> -->
-    <!-- <button mat-button routerLink="/checkins/list">Ver Fichajes</button> -->
-    <button mat-icon-button (click)="logout()">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </div>
+  <nav class="nav-buttons" aria-label="Menú de navegación">
+    <!-- Opciones para usuarios no autenticados -->
+    <ng-container *ngIf="!isLoggedIn">
+      <button mat-raised-button color="accent" routerLink="/auth/login" aria-label="Iniciar sesión" class="nav-button">
+        <mat-icon aria-hidden="true">login</mat-icon>
+        Login
+      </button>
+      <button mat-raised-button color="primary" routerLink="/auth/register" aria-label="Registrarse" class="nav-button">
+        <mat-icon aria-hidden="true">person_add</mat-icon>
+        Registro
+      </button>
+    </ng-container>
 
-
+    <!-- Opciones para usuarios autenticados -->
+    <ng-container *ngIf="isLoggedIn">
+      <button mat-raised-button color="primary" routerLink="/users/profile" aria-label="Ver perfil" class="nav-button">
+        <mat-icon aria-hidden="true">person</mat-icon>
+        Perfil
+      </button>
+      <button mat-raised-button color="primary" routerLink="/checkins" aria-label="Registrar asistencia"
+        class="nav-button">
+        <mat-icon aria-hidden="true">access_time</mat-icon>
+        Fichar
+      </button>
+      <button mat-raised-button color="primary" routerLink="/incidents" aria-label="Gestionar incidencias"
+        class="nav-button">
+        <mat-icon aria-hidden="true">warning</mat-icon>
+        Incidencias
+      </button>
+      <button mat-raised-button color="primary" routerLink="/vacations" aria-label="Gestionar vacaciones"
+        class="nav-button">
+        <mat-icon aria-hidden="true">beach_access</mat-icon>
+        Vacaciones
+      </button>
+      <button mat-raised-button color="warn" (click)="logout()" aria-label="Cerrar sesión" class="nav-button">
+        <mat-icon aria-hidden="true">logout</mat-icon>
+        Salir
+      </button>
+    </ng-container>
+  </nav>
 </mat-toolbar>

@@ -12,10 +12,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { SharedModule } from '../shared/shared.module';
 import { IncidentFormComponent } from './incident-form/incident-form.component';
 import { IncidentListComponent } from './incident-list/incident-list.component';
+import { ResolveIncidentDialogComponent } from './incident-list/resolve-incident-dialog/resolve-incident-dialog.component';
 
 const routes: Routes = [
   { path: '', component: IncidentListComponent },
@@ -23,7 +25,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [IncidentFormComponent, IncidentListComponent],
+  declarations: [
+    IncidentFormComponent,
+    IncidentListComponent,
+    ResolveIncidentDialogComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -40,7 +46,12 @@ const routes: Routes = [
     MatTooltipModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatDialogModule,
   ],
-  exports: [IncidentFormComponent, IncidentListComponent],
+  exports: [
+    IncidentFormComponent,
+    IncidentListComponent,
+    ResolveIncidentDialogComponent,
+  ],
 })
 export class IncidentsModule {}

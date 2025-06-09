@@ -1,52 +1,58 @@
 import { Injectable } from '@angular/core';
 import {
   CanActivate,
-  Router,
-  UrlTree,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
+  Router,
 } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
-import { TokenStorageService } from '../services/token-storage.service';
-
-interface JwtPayload {
-  id: string;
-  roles: string[];
-}
+import { AuthService } from '../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, map, catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoleGuard implements CanActivate {
   constructor(
-    private tokenStorage: TokenStorageService,
-    private router: Router
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean | UrlTree {
-    const expectedRoles: string[] = route.data['expectedRoles'];
-    const token = this.tokenStorage.getToken();
-    if (!token) {
-      return this.router.parseUrl('/auth/login');
-    }
+  ): Observable<boolean> {
+    return this.authService.verifyToken().pipe(
+      map(() => {
+        const requiredRoles = route.data['roles'] as string[];
+        const currentUser = this.authService.getCurrentUser();
 
-    let payload: JwtPayload;
-    try {
-      payload = jwtDecode<JwtPayload>(token);
-    } catch {
-      this.tokenStorage.signOut();
-      return this.router.parseUrl('/auth/login');
-    }
+        if (!currentUser) {
+          this.router.navigate(['/auth/login']);
+          return false;
+        }
 
-    const userRoles = payload.roles;
-    const hasRole = userRoles.some((r) => expectedRoles.includes(r));
-    if (!hasRole) {
-      return this.router.parseUrl('/');
-    }
+        const hasRequiredRole = requiredRoles.some((role) =>
+          currentUser.roles.includes(role)
+        );
 
-    return true;
+        if (!hasRequiredRole) {
+          this.toastr.error(
+            'No tienes permisos para acceder a esta página',
+            'Error'
+          );
+          this.router.navigate(['/']);
+          return false;
+        }
+
+        return true;
+      }),
+      catchError(() => {
+        this.toastr.error('Sesión expirada', 'Error');
+        this.router.navigate(['/auth/login']);
+        return of(false);
+      })
+    );
   }
 }

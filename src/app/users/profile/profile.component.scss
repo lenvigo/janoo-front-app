@@ -65,6 +65,15 @@
   }
 }
 
+.admin-section {
+  margin-bottom: 1.5rem;
+  .admin-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+}
+
 .profile-form {
   padding: 1rem;
   margin: 0 auto;

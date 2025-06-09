@@ -10,6 +10,9 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AuthService } from '../../core/services/auth.service';
+import { User } from '../../core/models/user';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-vacation-list',
@@ -18,12 +21,15 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./vacation-list.component.scss'],
 })
 export class VacationListComponent implements OnInit, OnDestroy {
+  isAdmin = false;
+  isManager = false;
+  usersMap: { [id: string]: User } = {};
   displayedColumns: string[] = [
+    'user',
     'startDate',
     'endDate',
     'reason',
     'status',
-    'createdAt',
     'actions',
   ];
   dataSource: MatTableDataSource<Vacation>;
@@ -36,15 +42,35 @@ export class VacationListComponent implements OnInit, OnDestroy {
   constructor(
     private vacationService: VacationService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService,
+    private userService: UserService
   ) {
     this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit(): void {
     this.loadVacations();
+    this.checkPermissions();
+
+    this.userService.getAllUsers().subscribe((users) => {
+      this.usersMap = {};
+      users.forEach((user) => {
+        this.usersMap[user.id] = user;
+      });
+    });
   }
 
+  private checkPermissions(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
+    this.isAdmin = currentUser.roles.includes('ADMIN_ROLE');
+    this.isManager = currentUser.roles.includes('MANAGER_ROLE');
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -107,6 +133,23 @@ export class VacationListComponent implements OnInit, OnDestroy {
   cancelVacation(id: string): void {
     this.vacationService
       .rejectVacation(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastr.success('Solicitud de vacaciones cancelada', 'Éxito');
+          this.loadVacations();
+        },
+        error: (error) => {
+          this.toastr.error(error.message, 'Error');
+          if (error.message.includes('Sesión expirada')) {
+            this.router.navigate(['/auth/login']);
+          }
+        },
+      });
+  }
+  approveVacation(id: string): void {
+    this.vacationService
+      .approveVacation(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
