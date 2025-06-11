@@ -14,14 +14,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AuthGuard } from '../core/guards/auth.guard';
+import { RoleGuard } from '../core/guards/role.guard';
 
 import { SharedModule } from '../shared/shared.module';
 import { VacationFormComponent } from './vacation-form/vacation-form.component';
 import { VacationListComponent } from './vacation-list/vacation-list.component';
 
 const routes: Routes = [
-  { path: '', component: VacationListComponent },
-  { path: 'new', component: VacationFormComponent },
+  { path: 'list', component: VacationListComponent , canActivate: [AuthGuard, RoleGuard],},
+  { path: 'form', component: VacationFormComponent },
 ];
 
 @NgModule({

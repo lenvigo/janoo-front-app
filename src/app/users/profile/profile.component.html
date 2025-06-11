@@ -22,7 +22,7 @@
   <mat-divider></mat-divider>
 
   <!-- Sección de Administrador -->
-  <div class="admin-section" *ngIf="user.roles.includes('ADMIN_ROLE')">
+  <div class="admin-section" *ngIf="user.roles.includes('ADMIN_ROLE') || user.roles.includes('MANAGER_ROLE')" >
     <h3>Panel de Administración</h3>
     <div class="admin-actions">
       <button mat-raised-button color="primary" routerLink="/role-management">

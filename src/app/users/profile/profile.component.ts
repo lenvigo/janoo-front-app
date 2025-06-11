@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit {
     console.log('ProfileComponent initialized');
   }
 
+
   ngOnInit(): void {
     console.log('ProfileComponent - ngOnInit');
     if (!this.authService.isAuthenticated()) {

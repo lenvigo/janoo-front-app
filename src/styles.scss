@@ -13,6 +13,7 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 html {
+  color-scheme: light dark;
   @include mat.theme(
     (
       color: (
