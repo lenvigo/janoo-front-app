@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-buttons',
@@ -6,4 +7,13 @@ import { Component } from '@angular/core';
   templateUrl: './buttons.component.html',
   styleUrl: './buttons.component.scss',
 })
-export class ButtonsComponent {}
+export class ButtonsComponent implements OnInit {
+  isAdmin = false;
+  isManager = false;
+
+  constructor(private userService: UserService) {}
+  ngOnInit(): void {
+    this.isAdmin = this.userService.isAdmin();
+    this.isManager = this.userService.isManager();
+  }
+}

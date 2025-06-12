@@ -3,16 +3,18 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { ProfileComponent } from './users/profile/profile.component';
-import { UserListComponent } from './users/user-list/user-list.component';
-import { CheckinFormComponent } from './checkins/checkin-form/checkin-form.component';
-import { CheckinListComponent } from './checkins/checkin-list/checkin-list.component';
 
 import { AuthGuard } from './core/guards/auth.guard';
-import { RoleGuard } from './core/guards/role.guard';
+
+import { AutoRedirectGuard } from './core/guards/auto-redirect.guard';
+import { ProfileComponent } from './features/users/profile/profile.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'users/profile', pathMatch: 'full' },
+  {
+    path: '',
+    canActivate: [AutoRedirectGuard],
+    component: ProfileComponent,
+  },
 
   // --- Autenticación ---
   { path: 'auth/login', component: LoginComponent },
@@ -20,32 +22,20 @@ const routes: Routes = [
 
   // --- Perfil / Usuarios ---
   {
-    path: 'users/profile',
-    component: ProfileComponent,
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'users',
-    component: UserListComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { expectedRoles: ['MANAGER_ROLE', 'ADMIN_ROLE'] },
+    loadChildren: () =>
+      import('./features/users/users.module').then((m) => m.UsersModule),
+
+    canActivate: [AuthGuard],
   },
 
   // --- Fichajes ---
   {
     path: 'checkins',
-    component: CheckinFormComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'checkins/list',
-    component: CheckinListComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { expectedRoles: ['MANAGER_ROLE', 'ADMIN_ROLE'] },
-  },
-  {
-    path: 'checkins/history',
-    component: CheckinListComponent,
+    loadChildren: () =>
+      import('./features/checkins/checkins.module').then(
+        (m) => m.CheckinsModule
+      ),
     canActivate: [AuthGuard],
   },
 
@@ -53,7 +43,9 @@ const routes: Routes = [
   {
     path: 'incidents',
     loadChildren: () =>
-      import('./incidents/incidents.module').then((m) => m.IncidentsModule),
+      import('./features/incidents/incidents.module').then(
+        (m) => m.IncidentsModule
+      ),
     canActivate: [AuthGuard],
   },
 
@@ -61,11 +53,13 @@ const routes: Routes = [
   {
     path: 'vacations',
     loadChildren: () =>
-      import('./vacations/vacations.module').then((m) => m.VacationsModule),
+      import('./features/vacations/vacations.module').then(
+        (m) => m.VacationsModule
+      ),
     canActivate: [AuthGuard],
   },
 
-  { path: '**', redirectTo: 'users/profile' },
+  { path: '**', redirectTo: 'auth/login' },
 ];
 
 @NgModule({

@@ -151,11 +151,11 @@ export class UserService {
   }
 
   isAdmin(): boolean {
-    return this.hasRole('ADMIN');
+    return this.hasRole('ADMIN_ROLE');
   }
 
   isManager(): boolean {
-    return this.hasRole('MANAGER');
+    return this.hasRole('MANAGER_ROLE');
   }
 
   // Métodos para la gestión de roles

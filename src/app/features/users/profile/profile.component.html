@@ -1,0 +1,107 @@
+<div class="profile-container" *ngIf="user; else loadingTpl">
+  <h2>Mi Perfil</h2>
+
+  <div class="profile-info">
+    <div class="user-avatar">
+      <img [src]="user.img || 'assets/default-avatar.png'" alt="Avatar" />
+    </div>
+
+    <div class="user-details">
+      <h3>{{ user.name }}</h3>
+      <p class="email">{{ user.email }}</p>
+      <p class="roles">
+        <span *ngFor="let role of user?.roles" class="role-badge">
+          {{ role === 'USER_ROLE' ? 'Usuario' :
+          role === 'MANAGER_ROLE' ? 'Manager' :
+          role === 'ADMIN_ROLE' ? 'Administrador' : role }}
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <!-- <mat-divider></mat-divider> -->
+
+  <!-- Sección de Administrador -->
+  <div class="admin-section" *ngIf="isAdmin || isManager">
+    <h3>Panel de Administración</h3>
+    <div class="admin-actions">
+      <button mat-raised-button color="primary" routerLink="/role-management">
+        <mat-icon>admin_panel_settings</mat-icon>
+        Panel de Administración
+      </button>
+      <button mat-raised-button color="accent" routerLink="/list">
+        <mat-icon>people</mat-icon>
+        Gestionar Usuarios
+      </button>
+    </div>
+  </div>
+
+  <mat-divider *ngIf="isAdmin"></mat-divider>
+  <button mat-raised-button color="primary" (click)="showEditForm = !showEditForm" class="full-width">
+    {{ showEditForm ? 'Cancelar edición' : '¿Quieres editar tu perfil?' }} </button>
+
+  <div *ngIf="showEditForm">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+      <h3>Editar Perfil</h3>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="profileForm.get('name')?.hasError('required')">
+          El nombre es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+        <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+          El email es requerido
+        </mat-error>
+        <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+          Ingresa un email válido
+        </mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field appearance="outline" class="full-width">
+            <mat-label>URL de Imagen</mat-label>
+            <input matInput formControlName="img" />
+          </mat-form-field> -->
+
+      <button mat-raised-button class="full-width" color="primary" type="submit"
+        [disabled]="profileForm.invalid || isLoading">
+        {{ isLoading ? "Guardando..." : "Guardar" }}
+      </button>
+    </form>
+    <!-- <mat-divider></mat-divider> -->
+
+    <!-- <div class="quick-actions">
+        <h3>Acciones Rápidas</h3>
+        <div class="action-buttons">
+          <button mat-raised-button color="accent" routerLink="/checkins">
+            <mat-icon>access_time</mat-icon>
+            Fichar Entrada/Salida
+          </button>
+          <button mat-raised-button color="primary" routerLink="/checkins/list">
+            <mat-icon>list</mat-icon>
+            Ver Fichajes
+          </button>
+          <button mat-raised-button color="warn" routerLink="/incidents">
+            <mat-icon>warning</mat-icon>
+            Reportar Incidencia
+          </button>
+          <button mat-raised-button color="primary" routerLink="/vacations">
+            <mat-icon>event</mat-icon>
+            Solicitar Vacaciones
+          </button>
+        </div>
+      </div> -->
+
+
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>

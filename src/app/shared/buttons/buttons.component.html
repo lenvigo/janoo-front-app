@@ -1,29 +1,41 @@
 <div class="quick-actions">
   <h3>Acciones Rápidas</h3>
   <div class="action-buttons">
-    <button mat-raised-button color="accent" routerLink="/checkins">
+    <a mat-raised-button color="accent" routerLink="/checkins/form">
       <mat-icon>access_time</mat-icon>
       Fichar Entrada/Salida
-    </button>
-    <button mat-raised-button color="primary" routerLink="/checkins/list">
+    </a>
+    <!-- <a *ngIf="!isAdmin && !isManager" mat-raised-button color="primary" routerLink="/checkins">
       <mat-icon>list</mat-icon>
       Ver Fichajes
-    </button>
-    <button mat-raised-button color="warn" routerLink="/incidents">
+    </a> -->
+    <a *ngIf="isAdmin || isManager" mat-raised-button color="primary" routerLink="/checkins/list">
+      <mat-icon>list</mat-icon>
+      Ver Fichajes
+    </a>
+    <a mat-raised-button color="warn" routerLink="/incidents/form">
       <mat-icon>warning</mat-icon>
       Reportar Incidencia
-    </button>
-    <button mat-raised-button color="warn" routerLink="/incidents/list">
+    </a>
+    <a *ngIf="isAdmin || isManager" mat-raised-button color="warn" routerLink="/incidents/list">
       <mat-icon>list</mat-icon>
       Ver Incidencias
-    </button>
-    <button mat-raised-button color="primary" routerLink="/vacations">
+    </a>
+    <a *ngIf="!isAdmin && !isManager" mat-raised-button color="warn" routerLink="/incidents">
+      <mat-icon>list</mat-icon>
+      Ver Incidencias
+    </a>
+    <a mat-raised-button color="primary" routerLink="/vacations/form">
       <mat-icon>event</mat-icon>
       Solicitar Vacaciones
-    </button>
-    <button mat-raised-button color="primary" routerLink="/vacations/list">
+    </a>
+    <a *ngIf="!isAdmin && !isManager" mat-raised-button color="primary" routerLink="/vacations">
       <mat-icon>list</mat-icon>
       Ver Vacaciones
-    </button>
+    </a>
+    <a *ngIf="isAdmin || isManager" mat-raised-button color="primary" routerLink="/vacations/list">
+      <mat-icon>list</mat-icon>
+      Ver Vacaciones
+    </a>
   </div>
 </div>

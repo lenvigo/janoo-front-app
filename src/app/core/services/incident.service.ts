@@ -1,3 +1,4 @@
+//import { CreateIncidentDto } from './incident.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -5,28 +6,29 @@ import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Incident, CreateIncidentDto } from '../models/incident';
 
-export interface Incident {
-  id: string;
-  userId: string;
-  title: string;
-  description: string;
-  status: 'OPEN' | 'RESOLVED';
-  createdAt: Date;
-  resolvedAt?: Date;
-  managerId?: string;
-  managerComment?: string;
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
+// export interface Incident {
+//   id: string;
+//   userId: string;
+//   title: string;
+//   description: string;
+//   status: 'OPEN' | 'RESOLVED';
+//   createdAt: Date;
+//   resolvedAt?: Date;
+//   managerId?: string;
+//   managerComment?: string;
+//   user?: {
+//     id: string;
+//     name: string;
+//     email: string;
+//   };
+// }
 
-export interface CreateIncidentDto {
-  title: string;
-  description: string;
-}
+// export interface CreateIncidentDto {
+//   title: string;
+//   description: string;
+// }
 
 interface ErrorResponse {
   message: string;
@@ -61,6 +63,16 @@ export class IncidentService {
     return this.http.get<Incident[]>(this.apiUrl).pipe(
       tap((response) => {
         console.log('Incidents received from backend:', response);
+      }),
+      catchError((error) => this.handleError(error))
+    );
+  }
+
+  // Listar incidencias de un usuario específico
+  getUserIncidents(userId: string): Observable<Incident[]> {
+    return this.http.get<Incident[]>(`${this.apiUrl}/user/${userId}`).pipe(
+      tap((response) => {
+        console.log('User incidents received from backend:', response);
       }),
       catchError((error) => this.handleError(error))
     );

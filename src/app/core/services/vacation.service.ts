@@ -5,26 +5,21 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Vacation, CreateVacationDto } from '../../core/models/vacation';
 
-export interface Vacation {
-  id: string;
-  startDate: string;
-  endDate: string;
-  reason: string;
-  status: 'PENDING' | 'APPROVED' | 'REJECTED';
-  createdAt: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
-
-export interface CreateVacationDto {
-  startDate: string;
-  endDate: string;
-  reason: string;
-}
+// export interface Vacation {
+//   id: string;
+//   startDate: string;
+//   endDate: string;
+//   reason: string;
+//   status: 'PENDING' | 'APPROVED' | 'REJECTED';
+//   createdAt: string;
+//   user: {
+//     id: string;
+//     name: string;
+//     email: string;
+//   };
+// }
 
 interface ErrorResponse {
   message: string;
@@ -71,15 +66,26 @@ export class VacationService {
     );
   }
 
-  getVacation(id: string): Observable<Vacation> {
-    console.log('Getting vacation from backend:', id);
-    return this.http.get<Vacation>(`${this.apiUrl}/${id}`).pipe(
-      tap((response) => {
-        console.log('Vacation received from backend:', response);
-      }),
-      catchError((error) => this.handleError(error))
-    );
-  }
+  // // Obtener vacaciones de un usuario específico
+  // getUserVacations(userId: string): Observable<Vacation[]> {
+  //   console.log('Getting user vacations from backend:', userId);
+  //   return this.http.get<Vacation[]>(`${this.apiUrl}/user/${userId}`).pipe(
+  //     tap((response) => {
+  //       console.log('User vacations received from backend:', response);
+  //     }),
+  //     catchError((error) => this.handleError(error))
+  //   );
+  // }
+
+  // getVacation(id: string): Observable<Vacation> {
+  //   console.log('Getting vacation from backend:', id);
+  //   return this.http.get<Vacation>(`${this.apiUrl}/${id}`).pipe(
+  //     tap((response) => {
+  //       console.log('Vacation received from backend:', response);
+  //     }),
+  //     catchError((error) => this.handleError(error))
+  //   );
+  // }
 
   createVacation(vacation: CreateVacationDto): Observable<Vacation> {
     console.log('Sending vacation to backend:', vacation);
