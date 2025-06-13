@@ -32,6 +32,7 @@
     "@angular/cli": "^19.2.8",
     "@angular/compiler-cli": "^19.2.0",
     "@types/jasmine": "~5.1.0",
+    "@types/jest": "^29.5.14",
     "@types/jwt-decode": "^2.2.1",
     "@types/node": "^24.0.1",
     "jasmine-core": "~5.6.0",
