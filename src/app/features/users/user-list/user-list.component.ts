@@ -12,7 +12,7 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'email', 'roles', 'status', 'actions'];
+  displayedColumns: string[] = ['name', 'email', 'roles', 'actions'];
   users: User[] = [];
   dataSource: MatTableDataSource<User>;
   isLoading = false;
@@ -48,14 +48,14 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
+  // applyFilter(event: Event): void {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
 
-  editUser(user: User): void {
-    this.router.navigate(['/users', user.id, 'edit']);
-  }
+  // editUser(user: User): void {
+  //   this.router.navigate(['/users', user.id, 'edit']);
+  // }
 
   deleteUser(userId: string): void {
     if (this.isAdmin) {

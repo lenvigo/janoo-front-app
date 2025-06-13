@@ -32,7 +32,7 @@ const routes: Routes = [
     path: 'role-management',
     component: RoleManagementComponent,
     canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['ADMIN_ROLE'] },
+    data: { roles: ['ADMIN_ROLE', , 'MANAGER_ROLE'] },
   },
 ];
 

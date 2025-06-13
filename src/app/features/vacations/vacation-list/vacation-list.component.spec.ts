@@ -5,10 +5,8 @@ import {
   tick,
 } from '@angular/core/testing';
 import { VacationListComponent } from './vacation-list.component';
-import {
-  VacationService,
-  Vacation,
-} from '../../core/services/vacation.service';
+import { VacationService } from '../../../core/services/vacation.service';
+import { Vacation } from '../../../core/models/vacation';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { of, throwError, Observable } from 'rxjs';

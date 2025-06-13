@@ -18,7 +18,7 @@
       <mat-label>Filtrar por usuario</mat-label>
       <mat-select (selectionChange)="filterByUser($event.value)">
         <mat-option value="all">Todos los usuarios</mat-option>
-        <mat-option *ngFor="let user of users" [value]="user.id">
+        <mat-option *ngFor="let user of usersArray">
           {{user.name}}
         </mat-option>
       </mat-select>
@@ -43,10 +43,11 @@
     <!-- Usuario Column -->
     <ng-container matColumnDef="user">
       <th mat-header-cell *matHeaderCellDef> Usuario </th>
-      <td mat-cell *matCellDef="let chk">
+      <td mat-cell *matCellDef="let users">
         <div class="user-info">
           <mat-icon class="user-icon">person</mat-icon>
-          {{ chk.user.name }}
+          <!-- {{ chk.user.name }} -->
+          {{ usersMap[users.userId].name|| 'Tú' }}
         </div>
       </td>
     </ng-container>

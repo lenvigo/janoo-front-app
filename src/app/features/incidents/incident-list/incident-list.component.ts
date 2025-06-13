@@ -62,6 +62,8 @@ export class IncidentListComponent implements OnInit {
         });
       });
     }
+    this.dataSource.filterPredicate = (data: Incident, filter: string) =>
+      data.status.toLowerCase().includes(filter);
   }
 
   private checkUserRoles(): void {
@@ -115,6 +117,10 @@ export class IncidentListComponent implements OnInit {
   //       return 'Pendiente';
   //   }
   // }
+  filterByStatus(status: string): void {
+    this.dataSource.filter = status.trim().toLowerCase();
+  }
+
   getStatusText(status: string): string {
     switch (status) {
       case 'OPEN':

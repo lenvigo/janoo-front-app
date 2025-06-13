@@ -20,6 +20,8 @@ export class CheckinListComponent implements OnInit {
   checkins: Checkin[] = [];
   dataSource: MatTableDataSource<Checkin>;
   users: User[] = [];
+  usersMap: { [id: string]: User } = {};
+
   isLoading = false;
   isAdmin = false;
   isManager = false;
@@ -47,10 +49,18 @@ export class CheckinListComponent implements OnInit {
     this.checkViewMode();
     this.loadCheckins();
     if (this.isAdmin || this.isManager) {
-      this.loadUsers();
+      this.userService.getAllUsers().subscribe((users) => {
+        this.usersMap = {};
+        users.forEach((user) => {
+          this.usersMap[user.id] = user;
+        });
+      });
     }
   }
 
+  get usersArray(): User[] {
+    return Object.values(this.usersMap);
+  }
   private checkViewMode(): void {
     this.route.data.subscribe((data) => {
       this.viewMode = data['view'] || 'own';

@@ -32,22 +32,27 @@ export class RoleManagementComponent implements OnInit {
   }
 
   private checkPermissions(): void {
-    const currentUser = this.authService.getCurrentUser();
+    console.log('checkpermision init');
+    const currentUser = this.authService.isLoggedIn$;
+    console.log('checkpermision: currentUser' + currentUser);
     if (!currentUser) {
       this.router.navigate(['/auth/login']);
+      console.log('checkpermision: currentUser: no hay permiso' + currentUser);
       return;
     }
 
-    this.isAdmin = currentUser.roles.includes('ADMIN_ROLE');
-    this.isManager = currentUser.roles.includes('MANAGER_ROLE');
+    this.isAdmin = this.userService.isAdmin();
+    this.isManager = this.userService.isManager();
 
-    if (!this.isAdmin && !this.isManager) {
-      this.router.navigate(['/']);
-      this.toastr.error(
-        'No tienes permisos para acceder a esta página',
-        'Error'
-      );
-    }
+    // if (!this.isAdmin || !this.isManager) {
+    //   console.log('checkpermision: isAdmin' + this.isAdmin);
+    //   console.log('checkpermision: isManager' + this.isManager);
+    //   this.router.navigate(['/']);
+    //   this.toastr.error(
+    //     'No tienes permisos para acceder a esta página',
+    //     'Error'
+    //   );
+    // }
   }
 
   loadUsers(): void {

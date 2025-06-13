@@ -26,7 +26,7 @@ export class VacationListComponent implements OnInit {
     'actions',
   ];
   dataSource: MatTableDataSource<Vacation>;
-  usersMap: { [key: string]: User } = {};
+  usersMap: { [id: string]: User } = {};
   users: User[] = [];
   isLoading = false;
   isAdmin = false;
@@ -54,9 +54,18 @@ export class VacationListComponent implements OnInit {
     this.view = this.route.snapshot.data['view'];
     this.loadVacations();
 
-    if (this.isAdmin && this.isManager) {
-      this.loadUsers();
+    if (this.isAdmin || this.isManager) {
+      this.userService.getAllUsers().subscribe((users) => {
+        this.usersMap = {};
+        users.forEach((user) => {
+          this.usersMap[user.id] = user;
+        });
+      });
     }
+  }
+
+  get usersArray(): User[] {
+    return Object.values(this.usersMap);
   }
 
   loadVacations(): void {
