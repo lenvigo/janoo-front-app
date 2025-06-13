@@ -13,6 +13,19 @@
   }
 }
 
+button {
+  width: 50%;
+
+  &:hover {
+    background-color: rgba(9, 22, 15, 0.7);
+    color: #ffffff;
+  }
+
+  &:focus {
+    outline: 0.0635rem solid rgb(14, 63, 9);
+  }
+}
+
 .incident-form {
   display: flex;
   flex-direction: column;

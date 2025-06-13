@@ -110,7 +110,7 @@
             (click)="rejectVacation(vacation.id)" matTooltip="Rechazar solicitud">
             <mat-icon>close</mat-icon>
           </button>
-          <button mat-icon-button color="accent" matTooltip="Pronto te contestarán">
+          <button *ngIf="!isAdmin && !isManager" mat-icon-button color="accent" matTooltip="Pronto te contestarán">
             <mat-icon>launch</mat-icon>
           </button>
         </td>
