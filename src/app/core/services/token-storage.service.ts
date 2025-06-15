@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { User } from '../models/user';
 
 const TOKEN_KEY = 'auth-token';
+const USER_KEY = 'auth-user';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +15,9 @@ export class TokenStorageService {
   }
 
   signOut(): void {
-    console.log('Signing out, removing token');
+    console.log('Signing out, removing token and user data');
     window.localStorage.removeItem(TOKEN_KEY);
+    window.localStorage.removeItem(USER_KEY);
     window.localStorage.clear();
     console.log(
       'Token removed, verifying:',
@@ -48,6 +51,19 @@ export class TokenStorageService {
       console.log('No token found in storage');
     }
     return token;
+  }
+
+  public saveUser(user: User): void {
+    window.localStorage.removeItem(USER_KEY);
+    window.localStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+
+  public getUser(): User | null {
+    const userStr = window.localStorage.getItem(USER_KEY);
+    if (userStr) {
+      return JSON.parse(userStr);
+    }
+    return null;
   }
 
   public isTokenValid(): boolean {

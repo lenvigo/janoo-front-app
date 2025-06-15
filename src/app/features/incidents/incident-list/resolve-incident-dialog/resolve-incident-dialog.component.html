@@ -1,0 +1,36 @@
+<div class="resolve-incident" role="dialog" aria-labelledby="dialog-title">
+  <h2 mat-dialog-title id="dialog-title">Resolver Incidencia</h2>
+
+  <mat-dialog-content>
+    <div class="incident-details" aria-label="Detalles de la incidencia">
+      <h3>{{data.incident.title}}</h3>
+      <p class="description">{{data.incident.description}}</p>
+      <p class="date">Creada: {{data.incident.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
+    </div>
+
+    <form [formGroup]="resolveForm" aria-label="Formulario de resolución">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Comentario de resolución</mat-label>
+        <textarea matInput formControlName="managerComment" rows="4"
+          placeholder="Describe cómo se ha resuelto la incidencia..." aria-label="Comentario de resolución"
+          aria-required="true"></textarea>
+        <mat-error *ngIf="resolveForm.get('managerComment')?.hasError('required')" role="alert">
+          El comentario es obligatorio
+        </mat-error>
+        <mat-error *ngIf="resolveForm.get('managerComment')?.hasError('minlength')" role="alert">
+          El comentario debe tener al menos 10 caracteres
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button mat-raised-button (click)="onCancel()" aria-label="Cancelar resolución">
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" [disabled]="!resolveForm.valid" (click)="onSubmit()"
+      aria-label="Confirmar resolución de incidencia">
+      Resolver Incidencia
+    </button>
+  </mat-dialog-actions>
+</div>

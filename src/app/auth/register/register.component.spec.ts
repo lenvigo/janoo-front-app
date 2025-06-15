@@ -1,170 +1,196 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { RegisterComponent } from './register.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { of, throwError } from 'rxjs';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { LoginResponse } from '../../core/models/login-response';
+import { of, throwError, defer } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
+// Mock User y LoginResponse
+const mockUser = {
+  id: '1',
+  name: 'Test',
+  email: 'test@mail.com',
+  password: '123456',
+  roles: ['user'],
+};
+const mockLoginResponse = defer(() =>
+  Promise.resolve({ token: 'fake-token', user: mockUser })
+);
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
-  let routerSpy: jasmine.SpyObj<Router>;
   let toastrSpy: jasmine.SpyObj<ToastrService>;
-
-  const mockResponse: LoginResponse = {
-    token: 'test-token',
-    user: {
-      id: '1',
-      name: 'Test User',
-      email: 'test@example.com',
-      roles: ['USER'],
-    },
-  };
+  let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    const authService = jasmine.createSpyObj('AuthService', ['register']);
-    const router = jasmine.createSpyObj('Router', ['navigate']);
-    const toastr = jasmine.createSpyObj('ToastrService', ['success', 'error']);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['register']);
+    toastrSpy = jasmine.createSpyObj('ToastrService', ['success', 'error']);
+    //authServiceSpy.login.and.returnValue(mockLoginResponse);
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+      ],
       declarations: [RegisterComponent],
-      imports: [ReactiveFormsModule],
       providers: [
         FormBuilder,
-        { provide: AuthService, useValue: authService },
-        { provide: Router, useValue: router },
-        { provide: ToastrService, useValue: toastr },
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: ToastrService, useValue: toastrSpy },
+        { provide: Router, useValue: routerSpy },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    routerSpy = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    toastrSpy = TestBed.inject(ToastrService) as jasmine.SpyObj<ToastrService>;
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize register form with empty values', () => {
-    expect(component.registerForm.get('name')?.value).toBe('');
-    expect(component.registerForm.get('email')?.value).toBe('');
-    expect(component.registerForm.get('password')?.value).toBe('');
+  it('should initialize the form with empty values', () => {
+    expect(component.registerForm).toBeDefined();
+    expect(component.registerForm.value).toEqual({
+      name: '',
+      email: '',
+      password: '',
+    });
   });
 
-  it('should validate required fields', () => {
-    const nameControl = component.registerForm.get('name');
-    const emailControl = component.registerForm.get('email');
-    const passwordControl = component.registerForm.get('password');
-
-    expect(nameControl?.valid).toBeFalsy();
-    expect(emailControl?.valid).toBeFalsy();
-    expect(passwordControl?.valid).toBeFalsy();
-
-    nameControl?.setValue('Test User');
-    emailControl?.setValue('test@example.com');
-    passwordControl?.setValue('123456');
-
-    expect(nameControl?.valid).toBeTruthy();
-    expect(emailControl?.valid).toBeTruthy();
-    expect(passwordControl?.valid).toBeTruthy();
-  });
-
-  it('should validate email format', () => {
-    const emailControl = component.registerForm.get('email');
-    emailControl?.setValue('invalid-email');
-    expect(emailControl?.valid).toBeFalsy();
-    expect(emailControl?.errors?.['email']).toBeTruthy();
-
-    emailControl?.setValue('valid@email.com');
-    expect(emailControl?.valid).toBeTruthy();
-  });
-
-  it('should validate password length', () => {
-    const passwordControl = component.registerForm.get('password');
-    passwordControl?.setValue('12345');
-    expect(passwordControl?.valid).toBeFalsy();
-    expect(passwordControl?.errors?.['minlength']).toBeTruthy();
-
-    passwordControl?.setValue('123456');
-    expect(passwordControl?.valid).toBeTruthy();
+  it('should mark form as invalid if fields are empty', () => {
+    component.registerForm.setValue({ name: '', email: '', password: '' });
+    expect(component.registerForm.invalid).toBeTrue();
   });
 
   it('should not submit if form is invalid', () => {
-    component.registerForm.setValue({
-      name: '',
-      email: 'invalid-email',
-      password: '12345',
-    });
+    spyOn(component, 'onSubmit').and.callThrough();
+    component.registerForm.setValue({ name: '', email: '', password: '' });
     component.onSubmit();
     expect(authServiceSpy.register).not.toHaveBeenCalled();
   });
 
-  it('should submit form and handle successful registration', () => {
-    authServiceSpy.register.and.returnValue(of(mockResponse));
-
+  it('should call AuthService.register and show success toastr on successful registration', fakeAsync(() => {
     component.registerForm.setValue({
-      name: 'Test User',
-      email: 'test@example.com',
+      name: 'Test',
+      email: 'test@mail.com',
       password: '123456',
     });
-    component.onSubmit();
+    // Devuelve el objeto esperado por el modelo
+    authServiceSpy.register.and.returnValue(mockLoginResponse);
 
+    component.onSubmit();
+    expect(component.isLoading).toBeTrue();
+    tick();
     expect(authServiceSpy.register).toHaveBeenCalledWith(
-      'Test User',
-      'test@example.com',
+      'Test',
+      'test@mail.com',
       '123456'
     );
+    expect(component.isLoading).toBeFalse();
     expect(toastrSpy.success).toHaveBeenCalledWith(
       'Registro exitoso',
       'Bienvenido'
     );
-  });
+  }));
 
-  it('should handle registration error with server error message', () => {
-    authServiceSpy.register.and.returnValue(
-      throwError(() => ({ error: { error: 'Email already exists' } }))
-    );
-
+  it('should show error toastr with server error message on registration error', fakeAsync(() => {
     component.registerForm.setValue({
-      name: 'Test User',
-      email: 'test@example.com',
+      name: 'Test',
+      email: 'test@mail.com',
       password: '123456',
     });
-    component.onSubmit();
+    const errorResponse = { error: { error: 'Email already exists' } };
+    authServiceSpy.register.and.returnValue(throwError(() => errorResponse));
 
+    component.onSubmit();
+    tick();
+    expect(component.isLoading).toBeFalse();
     expect(toastrSpy.error).toHaveBeenCalledWith(
       'Email already exists',
       'Registro fallido'
     );
-  });
+  }));
 
-  it('should handle registration error with generic error message', () => {
-    authServiceSpy.register.and.returnValue(
-      throwError(() => new Error('Server error'))
-    );
-
+  it('should show generic error toastr if error response does not contain error message', fakeAsync(() => {
     component.registerForm.setValue({
-      name: 'Test User',
-      email: 'test@example.com',
+      name: 'Test',
+      email: 'test@mail.com',
       password: '123456',
     });
-    component.onSubmit();
+    const errorResponse = {};
+    authServiceSpy.register.and.returnValue(throwError(() => errorResponse));
 
+    component.onSubmit();
+    tick();
+    expect(component.isLoading).toBeFalse();
     expect(toastrSpy.error).toHaveBeenCalledWith(
       'Error del servidor',
       'Registro fallido'
     );
+  }));
+
+  it('should set isLoading to true when submitting valid form and reset to false after response', fakeAsync(() => {
+    component.registerForm.setValue({
+      name: 'User',
+      email: 'user@mail.com',
+      password: 'abcdef',
+    });
+    authServiceSpy.register.and.returnValue(mockLoginResponse);
+
+    component.onSubmit();
+    expect(component.isLoading).toBeTrue();
+    tick();
+    expect(component.isLoading).toBeFalse();
+  }));
+
+  it('should not call AuthService.register if form is invalid', () => {
+    component.registerForm.setValue({ name: '', email: '', password: '' });
+    component.onSubmit();
+    expect(authServiceSpy.register).not.toHaveBeenCalled();
+  });
+
+  it('should validate email format', () => {
+    component.registerForm.setValue({
+      name: 'Test',
+      email: 'invalid-email',
+      password: '123456',
+    });
+    expect(component.registerForm.invalid).toBeTrue();
+    expect(component.registerForm.get('email')?.errors?.['email']).toBeTrue();
+  });
+
+  it('should validate password minimum length', () => {
+    component.registerForm.setValue({
+      name: 'Test',
+      email: 'test@mail.com',
+      password: '123',
+    });
+    expect(component.registerForm.invalid).toBeTrue();
+    expect(
+      component.registerForm.get('password')?.errors?.['minlength']
+    ).toBeTruthy();
+  });
+
+  it('should not show toastr onSubmit if form is invalid', () => {
+    component.registerForm.setValue({ name: '', email: '', password: '' });
+    component.onSubmit();
+    expect(toastrSpy.success).not.toHaveBeenCalled();
+    expect(toastrSpy.error).not.toHaveBeenCalled();
   });
 });

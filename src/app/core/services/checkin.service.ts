@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, throwError, map } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Checkin } from '../models/checkin';
 
@@ -36,6 +36,39 @@ export class CheckinService {
           timestamp: new Date(checkin.timestamp).toISOString(),
         }))
       ),
+      catchError(this.handleError)
+    );
+  }
+
+  // Listar fichajes de un usuario específico
+  getUserCheckins(userId: string): Observable<Checkin[]> {
+    return this.http.get<Checkin[]>(`${this.baseUrl}/user/${userId}`).pipe(
+      map((checkins) =>
+        checkins.map((checkin) => ({
+          ...checkin,
+          timestamp: new Date(checkin.timestamp).toISOString(),
+        }))
+      ),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * Elimina un fichaje por su ID.TODO implrmrntacion en back
+   *
+   * Envía una petición HTTP DELETE para eliminar el fichaje especificado del backend.
+   * La respuesta se mapea para asegurar que la propiedad `timestamp` esté en formato ISO.
+   * Cualquier error durante la petición es gestionado por el método `handleError`.
+   *
+   * @param checkinId - El identificador único del fichaje a eliminar.
+   * @returns Un Observable que emite el objeto `Checkin` eliminado con el `timestamp` en formato ISO.
+   */
+  deleteCheckin(checkinId: string): Observable<Checkin> {
+    return this.http.delete<Checkin>(`${this.baseUrl}/${checkinId}`).pipe(
+      map((checkin) => ({
+        ...checkin,
+        timestamp: new Date(checkin.timestamp).toISOString(),
+      })),
       catchError(this.handleError)
     );
   }

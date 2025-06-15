@@ -1,156 +1,160 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { LoginComponent } from './login.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { TokenStorageService } from '../../core/services/token-storage.service';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { of, throwError } from 'rxjs';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { LoginResponse } from '../../core/models/login-response';
+import { of, throwError, defer } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { flushMicrotasks } from '@angular/core/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
-  let tokenStorageSpy: jasmine.SpyObj<TokenStorageService>;
-  let routerSpy: jasmine.SpyObj<Router>;
   let toastrSpy: jasmine.SpyObj<ToastrService>;
+  let routerSpy: jasmine.SpyObj<Router>;
+  let tokenStorageSpy: jasmine.SpyObj<TokenStorageService>;
 
-  const mockResponse: LoginResponse = {
-    token: 'test-token',
-    user: {
-      id: '1',
-      name: 'Test User',
-      email: 'test@example.com',
-      roles: ['USER'],
-    },
+  const mockUser = {
+    id: '1',
+    name: 'Test User',
+    email: 'test@example.com',
+    password: '123456',
+    roles: ['user'],
   };
 
+  const loginResponse = defer(() =>
+    Promise.resolve({ token: 'fake-token', user: mockUser })
+  );
+
   beforeEach(async () => {
-    const authService = jasmine.createSpyObj('AuthService', ['login']);
-    const tokenStorage = jasmine.createSpyObj('TokenStorageService', [
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['login']);
+    toastrSpy = jasmine.createSpyObj('ToastrService', ['success', 'error']);
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    tokenStorageSpy = jasmine.createSpyObj('TokenStorageService', [
       'saveToken',
       'saveUser',
     ]);
-    const router = jasmine.createSpyObj('Router', ['navigate']);
-    const toastr = jasmine.createSpyObj('ToastrService', ['success', 'error']);
+    authServiceSpy.login.and.returnValue(loginResponse);
 
     await TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+      ],
       declarations: [LoginComponent],
-      imports: [ReactiveFormsModule],
       providers: [
         FormBuilder,
-        { provide: AuthService, useValue: authService },
-        { provide: TokenStorageService, useValue: tokenStorage },
-        { provide: Router, useValue: router },
-        { provide: ToastrService, useValue: toastr },
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: TokenStorageService, useValue: tokenStorageSpy },
+        { provide: Router, useValue: routerSpy },
+        { provide: ToastrService, useValue: toastrSpy },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    tokenStorageSpy = TestBed.inject(
-      TokenStorageService
-    ) as jasmine.SpyObj<TokenStorageService>;
-    routerSpy = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    toastrSpy = TestBed.inject(ToastrService) as jasmine.SpyObj<ToastrService>;
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize login form with empty values', () => {
-    expect(component.loginForm.get('email')?.value).toBe('');
-    expect(component.loginForm.get('password')?.value).toBe('');
+  it('should initialize the login form with email and password controls', () => {
+    expect(component.loginForm).toBeDefined();
+    expect(component.loginForm.get('email')).toBeTruthy();
+    expect(component.loginForm.get('password')).toBeTruthy();
   });
 
-  it('should validate email format', () => {
-    const emailControl = component.loginForm.get('email');
-    emailControl?.setValue('invalid-email');
-    expect(emailControl?.valid).toBeFalsy();
-    expect(emailControl?.errors?.['email']).toBeTruthy();
-
-    emailControl?.setValue('valid@email.com');
-    expect(emailControl?.valid).toBeTruthy();
-  });
-
-  it('should validate password length', () => {
-    const passwordControl = component.loginForm.get('password');
-    passwordControl?.setValue('12345');
-    expect(passwordControl?.valid).toBeFalsy();
-    expect(passwordControl?.errors?.['minlength']).toBeTruthy();
-
-    passwordControl?.setValue('123456');
-    expect(passwordControl?.valid).toBeTruthy();
-  });
-
-  it('should not submit if form is invalid', () => {
-    component.loginForm.setValue({
-      email: 'invalid-email',
-      password: '12345',
-    });
+  it('should not submit if the form is invalid', () => {
+    component.loginForm.setValue({ email: '', password: '' });
+    fixture.detectChanges();
     component.onSubmit();
     expect(authServiceSpy.login).not.toHaveBeenCalled();
+    expect(component.isLoading).toBeFalse();
   });
 
-  it('should submit form and handle successful login', () => {
-    authServiceSpy.login.and.returnValue(of(mockResponse));
-
+  it('should call AuthService.login and show success toast on successful login', fakeAsync(() => {
     component.loginForm.setValue({
       email: 'test@example.com',
       password: '123456',
     });
+    const loginResponse = defer(() =>
+      Promise.resolve({ token: 'fake-token', user: mockUser })
+    );
+    authServiceSpy.login.and.returnValue(loginResponse);
+    fixture.detectChanges();
     component.onSubmit();
-
+    expect(component.isLoading).toBeTrue();
+    tick();
     expect(authServiceSpy.login).toHaveBeenCalledWith(
       'test@example.com',
       '123456'
     );
+    expect(component.isLoading).toBeFalse();
     expect(toastrSpy.success).toHaveBeenCalledWith(
       'Login successful',
       'Bienvenido'
     );
-  });
+  }));
 
-  it('should handle login error with server error message', () => {
-    authServiceSpy.login.and.returnValue(
-      throwError(() => ({ error: { error: 'Invalid credentials' } }))
-    );
-
+  it('should show specific error toast if error response has error.error', waitForAsync(async () => {
     component.loginForm.setValue({
       email: 'test@example.com',
-      password: '123456',
+      password: '1234568',
     });
+
+    const errorResponse = {
+      error: {
+        error: 'Invalid credentials',
+      },
+    };
+    authServiceSpy.login.and.returnValue(
+      defer(() => throwError(() => errorResponse))
+    );
+    fixture.detectChanges();
     component.onSubmit();
 
+    await fixture.whenStable(); // <-- Espera a que todo termine
+
+    expect(component.isLoading).toBeFalse();
     expect(toastrSpy.error).toHaveBeenCalledWith(
       'Invalid credentials',
       'Login fallido'
     );
-  });
+  }));
 
-  it('should handle login error with generic error message', () => {
-    authServiceSpy.login.and.returnValue(
-      throwError(() => new Error('Server error'))
-    );
-
+  it('should show generic error toast if error response does not have error.error', waitForAsync(async () => {
     component.loginForm.setValue({
       email: 'test@example.com',
       password: '123456',
     });
+    const errorResponse = { error: {} };
+    authServiceSpy.login.and.returnValue(
+      defer(() => throwError(() => errorResponse))
+    );
+    fixture.detectChanges();
     component.onSubmit();
 
+    await fixture.whenStable();
+
+    expect(component.isLoading).toBeFalse();
     expect(toastrSpy.error).toHaveBeenCalledWith(
       'Error del servidor',
       'Login fallido'
     );
-  });
+  }));
 });

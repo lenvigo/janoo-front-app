@@ -14,9 +14,10 @@ import { MatDividerModule } from '@angular/material/divider';
 
 // Componente Navbar
 import { NavbarComponent } from './navbar/navbar.component';
+import { ButtonsComponent } from './buttons/buttons.component';
 
 @NgModule({
-  declarations: [NavbarComponent],
+  declarations: [NavbarComponent, ButtonsComponent],
   imports: [
     CommonModule,
     MatToolbarModule,
@@ -40,6 +41,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     MatProgressSpinnerModule,
     MatDividerModule,
     NavbarComponent,
+    ButtonsComponent,
   ],
 })
 export class SharedModule {}

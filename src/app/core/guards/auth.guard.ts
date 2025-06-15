@@ -6,25 +6,30 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
-import { TokenStorageService } from '../services/token-storage.service';
+import { AuthService } from '../services/auth.service';
+import { Observable, map, catchError, of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   constructor(
-    private tokenStorage: TokenStorageService,
-    private router: Router
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean | UrlTree {
-    const token = this.tokenStorage.getToken();
-    if (token) {
-      return true;
-    }
-    return this.router.parseUrl('/auth/login');
+  ): Observable<boolean | UrlTree> {
+    return this.authService.verifyToken().pipe(
+      map(() => true),
+      catchError(() => {
+        this.toastr.error('Sesión expirada', 'Error');
+        return of(this.router.parseUrl('/auth/login'));
+      })
+    );
   }
 }

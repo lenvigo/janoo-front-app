@@ -9,12 +9,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { CheckinsModule } from './checkins/checkins.module';
-import { IncidentsModule } from './incidents/incidents.module';
-import { VacationsModule } from './vacations/vacations.module';
+import { UsersModule } from './features/users/users.module';
+import { CheckinsModule } from './features/checkins/checkins.module';
+import { IncidentsModule } from './features/incidents/incidents.module';
+import { VacationsModule } from './features/vacations/vacations.module';
 
 import { AppComponent } from './app.component';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,7 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
-      timeOut: 3000,
+      timeOut: 6000,
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
     }),
@@ -38,7 +39,9 @@ import { AppComponent } from './app.component';
     VacationsModule, // Vacaciones
     AppRoutingModule, // al final, para capturar RUTAS
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

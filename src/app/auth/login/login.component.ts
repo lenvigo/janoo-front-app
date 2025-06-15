@@ -30,6 +30,15 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  /**
+   * Handles the login form submission.
+   *
+   * - Validates the form and prevents submission if invalid.
+   * - Sets the loading state while the authentication request is in progress.
+   * - Calls the authentication service with the provided email and password.
+   * - On successful login, displays a success toast notification.
+   * - On error, displays an error toast notification with a specific or generic message.
+   */
   onSubmit(): void {
     if (this.loginForm.invalid) {
       return;

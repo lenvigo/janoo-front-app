@@ -1,17 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, map, of, from, throwError } from 'rxjs';
+import {
+  Observable,
+  tap,
+  map,
+  of,
+  from,
+  throwError,
+  BehaviorSubject,
+} from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from '../models/login-response';
 import { TokenStorageService } from './token-storage.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = `${environment.apiUrl}/auth`;
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -24,6 +35,7 @@ export class AuthService {
       'Initial auth state:',
       this.isAuthenticated() ? 'Authenticated' : 'Not authenticated'
     );
+    this.isLoggedInSubject.next(this.isAuthenticated());
   }
 
   getToken(): string | null {
@@ -43,9 +55,11 @@ export class AuthService {
           if (response.token) {
             console.log('Saving token after login...');
             this.tokenStorage.saveToken(response.token);
+            this.tokenStorage.saveUser(response.user);
 
             if (this.tokenStorage.isTokenValid()) {
               console.log('Token saved and validated successfully');
+              this.isLoggedInSubject.next(true);
               this.router.navigate(['/users/profile']);
             } else {
               console.error('Token validation failed after login');
@@ -77,9 +91,11 @@ export class AuthService {
           if (response.token) {
             console.log('Saving token after registration...');
             this.tokenStorage.saveToken(response.token);
+            this.tokenStorage.saveUser(response.user);
 
             if (this.tokenStorage.isTokenValid()) {
               console.log('Token saved and validated successfully');
+              this.isLoggedInSubject.next(true);
               this.router.navigate(['/users/profile']);
             } else {
               console.error('Token validation failed after registration');
@@ -97,6 +113,7 @@ export class AuthService {
     console.log('Logging out...');
     const hadToken = this.tokenStorage.getToken() !== null;
     this.tokenStorage.signOut();
+    this.isLoggedInSubject.next(false);
 
     if (!hadToken || !this.tokenStorage.getToken()) {
       console.log('Logout successful');
@@ -132,5 +149,9 @@ export class AuthService {
       return throwError(() => new Error('Invalid or missing token'));
     }
     return of(true);
+  }
+
+  getCurrentUser(): User | null {
+    return this.tokenStorage.getUser();
   }
 }
