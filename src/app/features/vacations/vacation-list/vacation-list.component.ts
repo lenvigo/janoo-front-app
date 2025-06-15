@@ -28,6 +28,7 @@ export class VacationListComponent implements OnInit {
   dataSource: MatTableDataSource<Vacation>;
   usersMap: { [id: string]: User } = {};
   users: User[] = [];
+  //allVacations: Vacation[] = [];
   isLoading = false;
   isAdmin = false;
   isManager = false;
@@ -72,6 +73,7 @@ export class VacationListComponent implements OnInit {
     this.isLoading = true;
     this.vacationService.getVacations().subscribe({
       next: (vacations) => {
+        // this.allVacations = vacations;
         this.dataSource.data = vacations;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -130,8 +132,10 @@ export class VacationListComponent implements OnInit {
 
   filterByUser(userId: string): void {
     if (userId === 'all') {
+      //this.dataSource.data = this.allVacations;
       this.dataSource.data = this.dataSource.data;
     } else {
+      // this.dataSource.data = this.allVacations.filter(
       this.dataSource.data = this.dataSource.data.filter(
         (vacation) => vacation.user === userId
       );

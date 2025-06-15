@@ -71,7 +71,7 @@ export class VacationFormComponent implements OnInit, OnDestroy {
       if (end < start) {
         this.vacationForm.get('endDate')?.setErrors({ invalidDateRange: true });
         this.errorMessage =
-          'La fecha de fin debe ser posterior a la fecha de inicio';
+          'La fecha de inicio debe ser anterior a la fecha de fin';
       } else {
         this.vacationForm.get('endDate')?.setErrors(null);
         this.errorMessage = '';
@@ -80,16 +80,13 @@ export class VacationFormComponent implements OnInit, OnDestroy {
   }
 
   cancel(): void {
-    console.log('Cancelling vacation request');
     this.router.navigate(['/vacations']);
   }
 
   onSubmit(): void {
-    console.log('Form submitted with values:', this.vacationForm.value);
     this.errorMessage = '';
 
     if (this.vacationForm.invalid) {
-      console.log('Form is invalid:', this.vacationForm.errors);
       this.toastr.error(
         'Por favor, completa todos los campos correctamente',
         'Error'
@@ -101,10 +98,7 @@ export class VacationFormComponent implements OnInit, OnDestroy {
     const startDate = new Date(formValue.startDate);
     const endDate = new Date(formValue.endDate);
 
-    console.log('Parsed dates:', { startDate, endDate });
-
     if (endDate < startDate) {
-      console.log('Invalid date range');
       this.errorMessage =
         'La fecha de inicio debe ser anterior a la fecha de fin';
       return;
@@ -117,21 +111,17 @@ export class VacationFormComponent implements OnInit, OnDestroy {
       reason: formValue.reason,
     };
 
-    console.log('Sending vacation request with data:', vacationData);
-
     this.vacationService
       .createVacation(vacationData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          console.log('Vacation request successful:', response);
           this.isLoading = false;
           this.toastr.success('Solicitud de vacaciones enviada', 'Éxito');
           this.vacationForm.reset();
           this.router.navigate(['/vacations']);
         },
         error: (error) => {
-          console.error('Error creating vacation:', error);
           this.isLoading = false;
           this.errorMessage = error.message;
         },
