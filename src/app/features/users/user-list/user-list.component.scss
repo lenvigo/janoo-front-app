@@ -1,0 +1,20 @@
+.user-list-container {
+  width: 800px;
+  margin: 40px auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+  h2 {
+    text-align: center;
+    padding: 20px;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .loading {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+}

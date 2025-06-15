@@ -1,0 +1,38 @@
+<div class="auth-container" role="main">
+  <h2>Iniciar Sesión</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" aria-label="Formulario de inicio de sesión">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="you@example.com" aria-label="Correo electrónico"
+        aria-required="true" />
+      <mat-error *ngIf="loginForm.get('email')?.hasError('required')" role="alert">
+        El email es requerido
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('email')?.hasError('email')" role="alert">
+        Ingresa un email válido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Contraseña</mat-label>
+      <input matInput type="password" formControlName="password" placeholder="******" aria-label="Contraseña"
+        aria-required="true" />
+      <mat-error *ngIf="loginForm.get('password')?.hasError('required')" role="alert">
+        La contraseña es requerida
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')" role="alert">
+        Mínimo 6 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading"
+      [attr.aria-busy]="isLoading" aria-label="Iniciar sesión">
+      {{ isLoading ? "Ingresando..." : "Ingresar" }}
+    </button>
+
+    <p>
+      ¿No tienes cuenta?
+      <a routerLink="/auth/register" aria-label="Ir a la página de registro">Regístrate aquí</a>
+    </p>
+  </form>
+</div>

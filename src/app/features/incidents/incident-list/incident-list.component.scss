@@ -1,0 +1,109 @@
+.incident-list-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+    color: #333;
+  }
+}
+
+.search-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  overflow: auto;
+  background: white;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-column-actions {
+  width: 100px;
+  text-align: center;
+}
+
+.mat-column-status {
+  width: 120px;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &.status-open {
+    background-color: #ff9800;
+    color: white;
+  }
+
+  &.status-resolved {
+    background-color: #4caf50;
+    color: white;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+
+  mat-icon {
+    margin-right: 8px;
+  }
+  &:hover {
+    background-color: rgba(9, 22, 15, 0.7);
+    color: #ffffff;
+  }
+
+  &:focus {
+    outline: 0.0635rem solid rgb(14, 63, 9);
+  }
+}
+
+.mat-mdc-row:hover {
+  background-color: #f5f5f5;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-column-description {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

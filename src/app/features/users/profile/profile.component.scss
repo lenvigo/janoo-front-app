@@ -1,0 +1,126 @@
+.profile-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+  h2 {
+    margin-bottom: 2rem;
+    color: #555;
+    text-align: end;
+  }
+
+  h3 {
+    margin: 1.5rem 0 1rem;
+    color: #666;
+  }
+
+  button {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    &:hover {
+      background-color: rgba(9, 22, 15, 0.7);
+      color: #ffffff;
+    }
+
+    &:focus {
+      outline: 0.0635rem solid rgb(14, 63, 9);
+    }
+  }
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  .user-avatar {
+    width: 100px;
+    height: 100px;
+    margin-right: 2rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+  .user-details {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.5rem;
+    }
+
+    .email {
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .roles {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+
+      .role-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 16px;
+        font-size: 0.875rem;
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+    }
+  }
+}
+
+.admin-section {
+  margin-bottom: 1.5rem;
+  .admin-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+}
+
+.profile-form {
+  padding: 1rem;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  border: 2px solid green;
+  border-radius: 12px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+// .quick-actions {
+//   margin-top: 2rem;
+
+//   .action-buttons {
+//     display: grid;
+//     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+//     gap: 1rem;
+//     margin-top: 1rem;
+
+//     button {
+//       display: flex;
+//       align-items: center;
+//       justify-content: center;
+//       gap: 0.5rem;
+//       padding: 0.75rem;
+//     }
+//   }
+// }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}

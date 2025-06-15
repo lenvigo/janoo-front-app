@@ -1,0 +1,47 @@
+<mat-toolbar color="primary" role="navigation" aria-label="Navegación principal">
+  <span class="app-title" routerLink="/" role="link" tabindex="0" aria-label="Ir a inicio">Janoo</span>
+  <span class="spacer"></span>
+
+  <nav class="nav-buttons" aria-label="Menú de navegación">
+    <!-- Opciones para usuarios no autenticados -->
+    <ng-container *ngIf="!isLoggedIn">
+      <a mat-raised-button color="accent" routerLink="/auth/login" aria-label="Iniciar sesión" class="nav-button">
+        <mat-icon aria-hidden="true">login</mat-icon>
+        Login
+      </a>
+      <a mat-raised-button color="primary" routerLink="/auth/register" aria-label="Registrarse como nuevo usuario"
+        class="nav-button">
+        <mat-icon aria-hidden="true">person_add</mat-icon>
+        Registro
+      </a>
+    </ng-container>
+
+    <!-- Opciones para usuarios autenticados -->
+    <ng-container *ngIf="isLoggedIn">
+      <a mat-raised-button color="primary" routerLink="/users/profile" aria-label="Ver y editar mi perfil"
+        class="nav-button">
+        <mat-icon aria-hidden="true">person</mat-icon>
+        Perfil
+      </a>
+      <a mat-raised-button color="primary" routerLink="/checkins" aria-label="Registrar entrada o salida"
+        class="nav-button">
+        <mat-icon aria-hidden="true">access_time</mat-icon>
+        Fichar
+      </a>
+      <a mat-raised-button color="primary" routerLink="/incidents" aria-label="Gestionar incidencias y reportes"
+        class="nav-button">
+        <mat-icon aria-hidden="true">warning</mat-icon>
+        Incidencias
+      </a>
+      <a mat-raised-button color="primary" routerLink="/vacations" aria-label="Gestionar solicitudes de vacaciones"
+        class="nav-button">
+        <mat-icon aria-hidden="true">beach_access</mat-icon>
+        Vacaciones
+      </a>
+      <a mat-raised-button color="warn" (click)="logout()" aria-label="Cerrar sesión" class="nav-button">
+        <mat-icon aria-hidden="true">logout</mat-icon>
+        Salir
+      </a>
+    </ng-container>
+  </nav>
+</mat-toolbar>
