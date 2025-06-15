@@ -30,16 +30,17 @@
   <div class="table-container mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort aria-label="Lista de incidencias">
 
-      <ng-container matColumnDef="user" *ngIf="isAdmin || isManager">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Usuario
+        </th>
         <td mat-cell *matCellDef="let incident">
-          {{ usersMap[incident.userId].name }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="user" *ngIf="!isAdmin && !isManager">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
-        <td mat-cell *matCellDef="let incident">
-          {{ 'Tú' }}
+          <ng-container *ngIf="canManageIncidents(); else onlyYou">
+            {{ usersMap[incident.userId].name || 'Usuario no encontrado' }}
+          </ng-container>
+          <ng-template #onlyYou>
+            Tú
+          </ng-template>
         </td>
       </ng-container>
 
