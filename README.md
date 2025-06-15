@@ -1,6 +1,6 @@
 # Janoo Front App
 
-Aplicación frontend para la gestión de recursos humanos, desarrollada con Angular.
+Aplicación frontend para la gestión de fichajes, desarrollada con Angular.
 
 ## Estructura del Proyecto
 
