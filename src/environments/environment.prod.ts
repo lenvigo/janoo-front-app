@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://janoo.onrender.com',
+  apiUrl: 'https://janoo.onrender.com/api',
 };
