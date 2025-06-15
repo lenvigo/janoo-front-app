@@ -1,40 +1,62 @@
-# JanooFrontApp
+# Janoo Front App
 
-Aplicación de gestión de recursos humanos desarrollada con Angular 17.
+Aplicación frontend para la gestión de recursos humanos, desarrollada con Angular.
+
+## Estructura del Proyecto
+
+```
+src/
+├── app/
+│   ├── auth/                    # Módulo de autenticación
+│   │   ├── login/              # Componente de inicio de sesión
+│   │   └── register/           # Componente de registro
+│   │
+│   ├── core/                   # Servicios y utilidades core
+│   │   ├── guards/            # Guards de autenticación
+│   │   ├── interceptors/      # Interceptores HTTP
+│   │   ├── models/            # Interfaces y tipos
+│   │   └── services/          # Servicios principales
+│   │
+│   ├── features/              # Módulos de funcionalidad
+│   │   ├── checkins/         # Gestión de fichajes
+│   │   ├── incidents/        # Gestión de incidencias
+│   │   ├── users/            # Gestión de usuarios
+│   │   └── vacations/        # Gestión de vacaciones
+│   │
+│   ├── shared/               # Componentes y utilidades compartidas
+│   │   └── components/       # Componentes reutilizables
+│   │
+│   ├── app.component.*       # Componente raíz
+│   ├── app.module.ts         # Módulo principal
+│   ├── app-routing.module.ts # Configuración de rutas
+│   └── app.config.ts         # Configuración de la aplicación
+│
+├── assets/                   # Recursos estáticos
+├── environments/             # Configuraciones por entorno
+└── styles/                   # Estilos globales
+```
 
 ## Características Principales
 
-- **Autenticación y Autorización**
+- **Autenticación**: Sistema de login y registro
+- **Gestión de Usuarios**: Perfiles, roles y permisos
+- **Fichajes**: Control de entrada/salida
+- **Incidencias**: Reporte y seguimiento de incidencias
+- **Vacaciones**: Solicitud y gestión de vacaciones
 
-  - Login y registro de usuarios
-  - Gestión de roles (ADMIN, MANAGER, USER)
-  - Protección de rutas basada en roles
+## Tecnologías
 
-- **Gestión de Usuarios**
+- Angular
+- Angular Material
+- RxJS
+- NgRx (para gestión de estado)
+- SCSS
+- TypeScript
 
-  - Perfil de usuario
-  - Gestión de empleados (solo ADMIN)
-  - Asignación de roles y departamentos
+## Requisitos
 
-- **Gestión de Vacaciones**
-
-  - Solicitud de vacaciones
-  - Aprobación/Rechazo de solicitudes (MANAGER)
-  - Historial de vacaciones
-  - Balance de días disponibles
-
-- **Gestión de Incidencias**
-
-  - Reporte de incidencias
-  - Seguimiento de estado
-  - Resolución de incidencias (MANAGER)
-  - Historial de incidencias
-
-## Requisitos Previos
-
-- Node.js (v18 o superior)
-- npm (v9 o superior)
-- Angular CLI (v17 o superior)
+- Node.js 22.x
+- npm 10.x
 
 ## Instalación
 
@@ -47,7 +69,6 @@ git clone [https://github.com/lenvigo/janoo-front-app]
 2. Instalar dependencias:
 
 ```bash
-cd janoo-front-app
 npm install
 ```
 
@@ -63,90 +84,34 @@ Para iniciar el servidor de desarrollo:
 ng serve
 ```
 
-La aplicación estará disponible en `http://localhost:4200/`.
-
-## Estructura del Proyecto
-
-```
-src/
-├── app/
-│   ├── core/                 # Servicios, guards, interceptors
-│   ├── shared/              # Componentes y módulos compartidos
-│   ├── auth/                # Módulo de autenticación
-│   ├── users/               # Módulo de gestión de usuarios
-│   ├── vacations/           # Módulo de gestión de vacaciones
-│   └── incidents/           # Módulo de gestión de incidencias
-├── assets/                  # Recursos estáticos
-└── environments/            # Configuración por entorno
-```
-
-## Módulos Principales
-
-### Auth Module
-
-- Login
-- Registro
-- Recuperación de contraseña
-
-### Users Module
-
-- Lista de usuarios
-- Perfil de usuario
-- Gestión de roles
-
-### Vacations Module
-
-- Solicitud de vacaciones
-- Lista de solicitudes
-- Aprobación/Rechazo
-
-### Incidents Module
-
-- Reporte de incidencias
-- Lista de incidencias
-- Resolución de incidencias
-
-## Construcción
-
-Para construir el proyecto:
+4. Iniciar el servidor de desarrollo:
 
 ```bash
-ng build
+npm start
 ```
 
-Los archivos generados se almacenarán en el directorio `dist/`.
+## Scripts Disponibles
 
-## Pruebas
+- `npm start`: Inicia el servidor de desarrollo
+- `npm run build`: Construye la aplicación para producción
+- `npm test`: Ejecuta los tests unitarios
+- `npm run lint`: Ejecuta el linter
+- `npm run e2e`: Ejecuta los tests end-to-end
 
-Para ejecutar las pruebas unitarias:
+## CI/CD
 
-```bash
-ng test
-```
+El proyecto utiliza GitHub Actions para la integración continua. El workflow incluye:
 
-Para ejecutar las pruebas e2e:
-
-```bash
-ng e2e
-```
-
-## Despliegue
-
-1. Construir la aplicación:
-
-```bash
-ng build --configuration production
-```
-
-2. Los archivos generados en `dist/` están listos para ser desplegados en cualquier servidor web.
+- Linting
+- Testing
+- Build
+- Cache para optimización
 
 ## Contribución
 
-1. Fork el repositorio
-2. Crear una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abrir un Pull Request
+1. Crear una rama desde `develop`
+2. Realizar cambios
+3. Crear un Pull Request a `develop`
 
 ## Licencia
 
