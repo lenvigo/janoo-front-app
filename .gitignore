@@ -9,11 +9,17 @@
 
 # Node
 /node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
 # Logs
 npm-debug.log
 yarn-error.log
 angular.log
+logs
+*.log
 
 # IDEs and editors
 .idea/
@@ -23,6 +29,8 @@ angular.log
 *.launch
 .settings/
 *.sublime-workspace
+*.swp
+*.swo
 
 # Visual Studio Code
 .vscode/*
@@ -40,12 +48,33 @@ angular.log
 /libpeerconnection.log
 testem.log
 /typings
+/.nyc_output
+/cypress/videos
+/cypress/screenshots
 
 # System files
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Environment variables
 .env
-.env.*.local
+.env.*
+!.env.example
 .environments/*
+# CI/CD
+.cache/
+.github/workflows/*.log
+coverage/
+.nyc_output/
+.angular/cache/
+
+# Build artifacts
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+
+# Local development
+*.local
+local.*
