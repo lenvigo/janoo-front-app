@@ -9,7 +9,8 @@
         <mat-icon aria-hidden="true">login</mat-icon>
         Login
       </a>
-      <a mat-raised-button color="primary" routerLink="/auth/register" aria-label="Registrarse" class="nav-button">
+      <a mat-raised-button color="primary" routerLink="/auth/register" aria-label="Registrarse como nuevo usuario"
+        class="nav-button">
         <mat-icon aria-hidden="true">person_add</mat-icon>
         Registro
       </a>
@@ -17,20 +18,23 @@
 
     <!-- Opciones para usuarios autenticados -->
     <ng-container *ngIf="isLoggedIn">
-      <a mat-raised-button color="primary" routerLink="/users/profile" aria-label="Ver perfil" class="nav-button">
+      <a mat-raised-button color="primary" routerLink="/users/profile" aria-label="Ver y editar mi perfil"
+        class="nav-button">
         <mat-icon aria-hidden="true">person</mat-icon>
         Perfil
       </a>
-      <a mat-raised-button color="primary" routerLink="/checkins" aria-label="Registrar asistencia" class="nav-button">
+      <a mat-raised-button color="primary" routerLink="/checkins" aria-label="Registrar entrada o salida"
+        class="nav-button">
         <mat-icon aria-hidden="true">access_time</mat-icon>
         Fichar
       </a>
-      <a mat-raised-button color="primary" routerLink="/incidents" aria-label="Gestionar incidencias"
+      <a mat-raised-button color="primary" routerLink="/incidents" aria-label="Gestionar incidencias y reportes"
         class="nav-button">
         <mat-icon aria-hidden="true">warning</mat-icon>
         Incidencias
       </a>
-      <a mat-raised-button color="primary" routerLink="/vacations" aria-label="Gestionar vacaciones" class="nav-button">
+      <a mat-raised-button color="primary" routerLink="/vacations" aria-label="Gestionar solicitudes de vacaciones"
+        class="nav-button">
         <mat-icon aria-hidden="true">beach_access</mat-icon>
         Vacaciones
       </a>

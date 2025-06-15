@@ -2,40 +2,45 @@
   <div class="quick-actions">
     <h3>Acciones Rápidas</h3>
     <div class="action-buttons">
-      <a mat-raised-button color="accent" routerLink="/checkins/form">
-        <mat-icon>access_time</mat-icon>
+      <a mat-raised-button color="accent" routerLink="/checkins/form" aria-label="Fichar Entrada o Salida">
+        <mat-icon aria-hidden="true">access_time</mat-icon>
         Fichar Entrada/Salida
       </a>
       <!-- <a *ngIf="!isAdmin && !isManager" mat-raised-button color="primary" routerLink="/checkins">
       <mat-icon>list</mat-icon>
       Ver Fichajes
     </a> -->
-      <a *ngIf="isAdmin || isManager" mat-raised-button color="primary" routerLink="/checkins/list">
-        <mat-icon>list</mat-icon>
+      <a *ngIf="isAdmin || isManager" mat-raised-button color="primary" routerLink="/checkins/list"
+        aria-label="Ver lista de fichajes">
+        <mat-icon aria-hidden="true">list</mat-icon>
         Ver Fichajes
       </a>
-      <a mat-raised-button color="warn" routerLink="/incidents/form">
-        <mat-icon>warning</mat-icon>
+      <a mat-raised-button color="warn" routerLink="/incidents/form" aria-label="Reportar una incidencia">
+        <mat-icon aria-hidden="true">warning</mat-icon>
         Reportar Incidencia
       </a>
-      <a *ngIf="isAdmin || isManager" mat-raised-button color="warn" routerLink="/incidents/list">
-        <mat-icon>list</mat-icon>
+      <a *ngIf="isAdmin || isManager" mat-raised-button color="warn" routerLink="/incidents/list"
+        aria-label="Ver lista de incidencias">
+        <mat-icon aria-hidden="true">list</mat-icon>
         Ver Incidencias
       </a>
-      <a *ngIf="!isAdmin && !isManager" mat-raised-button color="warn" routerLink="/incidents">
-        <mat-icon>list</mat-icon>
+      <a *ngIf="!isAdmin && !isManager" mat-raised-button color="warn" routerLink="/incidents"
+        aria-label="Ver mis incidencias">
+        <mat-icon aria-hidden="true">list</mat-icon>
         Ver Incidencias
       </a>
-      <a mat-raised-button color="primary" routerLink="/vacations/form">
-        <mat-icon>event</mat-icon>
+      <a mat-raised-button color="primary" routerLink="/vacations/form" aria-label="Solicitar vacaciones">
+        <mat-icon aria-hidden="true">event</mat-icon>
         Solicitar Vacaciones
       </a>
-      <a *ngIf="!isAdmin && !isManager" mat-raised-button color="primary" routerLink="/vacations">
-        <mat-icon>list</mat-icon>
+      <a *ngIf="!isAdmin && !isManager" mat-raised-button color="primary" routerLink="/vacations"
+        aria-label="Ver mis vacaciones">
+        <mat-icon aria-hidden="true">list</mat-icon>
         Ver Vacaciones
       </a>
-      <a *ngIf="isAdmin || isManager" mat-raised-button color="primary" routerLink="/vacations/list">
-        <mat-icon>list</mat-icon>
+      <a *ngIf="isAdmin || isManager" mat-raised-button color="primary" routerLink="/vacations/list"
+        aria-label="Ver lista de vacaciones">
+        <mat-icon aria-hidden="true">list</mat-icon>
         Ver Vacaciones
       </a>
     </div>
