@@ -1,13 +1,15 @@
-# 1\. Introducción
+# Janoo - Frontend
+
+## 1\. Introducción
 
 La gestión de horarios, días festivos y vacaciones en el entorno empresarial actual requiere soluciones robustas y eficientes. La presente propuesta tiene como objetivo desarrollar una aplicación web capaz de gestionar el fichaje de empleados de forma precisa y segura.
 Este proyecto nace con el propósito de cubrir la necesidad de una herramienta de gestión del tiempo basada en las mejores prácticas del desarrollo de software, que garantice escalabilidad y accesibilidad. De este modo, se busca ofrecer una solución comercializable a organizaciones que demandan una gestión avanzada del tiempo laboral de sus empleados.
 
-### Motivación Personal
+#### Motivación Personal
 
 Personalmente busco avanzar desde un rol de maquetación web hacia un perfil full-stack, saliendo de mi zona de confort para desarrollar soluciones tecnológicas completas y escalables.
 
-# 2\. Objetivos
+## 2\. Objetivos
 
 - Registro de fichajes: Permitir que los empleados registren sus entradas y salidas de forma intuitiva. ✅
 
@@ -19,7 +21,7 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
 - Compatibilidad multiplataforma: Asegurar que la aplicación funcione correctamente en diversos dispositivos. ❕❗
 
-## Historias de Usuario {#historias-de-usuario}
+### Historias de Usuario :
 
 - ##### Historia 1: Registro de entrada y salida ✅
 
@@ -27,9 +29,9 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   Criterios de aceptación*:*
 
-1. La interfaz muestra botones claramente identificados para “Check-in” y “Check-out”.
-2. Al pulsar uno de estos botones, se genera un registro en la base de datos con la fecha y hora actuales.
-3. Se muestra un mensaje de confirmación tras el registro exitoso.
+  1. La interfaz muestra botones claramente identificados para “Check-in” y “Check-out”.
+  2. Al pulsar uno de estos botones, se genera un registro en la base de datos con la fecha y hora actuales.
+  3. Se muestra un mensaje de confirmación tras el registro exitoso.
 
 - ##### Historia 2: Visualización del estado actual de fichaje ✅
 
@@ -37,9 +39,9 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   Criterios de aceptación*:*
 
-1. El panel muestra claramente la hora de entrada y, de haberla, la de salida.
-2. Si falta el registro de salida, se destaca para que el usuario lo complete.
-3. La información se actualiza en tiempo real tras cada acción.
+  1. El panel muestra claramente la hora de entrada y, de haberla, la de salida.
+  2. Si falta el registro de salida, se destaca para que el usuario lo complete.
+  3. La información se actualiza en tiempo real tras cada acción.
 
 - ##### Historia 3: Calendario de días festivos y vacaciones (Futuro) ⏳ planificado
 
@@ -47,9 +49,9 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   Criterios de aceptación:
 
-1. El calendario es accesible desde el panel de control.
-2. Se distinguen visualmente los días festivos (por ejemplo, con un color específico o ícono) y los días de vacaciones personales.
-3. La información se actualiza automáticamente en función de las aprobaciones.
+  1. El calendario es accesible desde el panel de control.
+  2. Se distinguen visualmente los días festivos (por ejemplo, con un color específico o ícono) y los días de vacaciones personales.
+  3. La información se actualiza automáticamente en función de las aprobaciones.
 
 - ##### Historia 4: Reporte de asistencia para administración (Futuro) ⏳ planificado
 
@@ -57,10 +59,10 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   Criterios de aceptación:
 
-1. La herramienta permite filtrar por empleado, departamento y rango de fechas.
-2. Se muestran totales resumidos y desgloses por período.
-3. Sistema de autenticación
-4. Valorar que el reporte se pueda exportar en formatos estándar.
+  1. La herramienta permite filtrar por empleado, departamento y rango de fechas.
+  2. Se muestran totales resumidos y desgloses por período.
+  3. Sistema de autenticación
+  4. Valorar que el reporte se pueda exportar en formatos estándar.
 
 - ##### Historia 5: Registro de nuevo usuario ✅
 
@@ -68,9 +70,9 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   Criterios de aceptación:
 
-1. El formulario de registro valida campos obligatorios (correo, contraseña, etc.).
-2. La contraseña se cifra utilizando Bcrypt.
-3. Se confirma el registro mediante un mensaje o redirección a la pantalla de login.
+  1. El formulario de registro valida campos obligatorios (correo, contraseña, etc.).
+  2. La contraseña se cifra utilizando Bcrypt.
+  3. Se confirma el registro mediante un mensaje o redirección a la pantalla de login.
 
 - ##### Historia 6: Inicio de sesión seguro ✅
 
@@ -78,8 +80,8 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   Criterios de aceptación:
 
-1. Al introducir credenciales válidas, se genera un token JWT que se almacena en el localStorage.
-2. Se muestran mensajes de error en caso de credenciales incorrectas.
+  1. Al introducir credenciales válidas, se genera un token JWT que se almacena en el localStorage.
+  2. Se muestran mensajes de error en caso de credenciales incorrectas.
 
 - ##### Historia 7: Interfaz responsive y accesible ❕❗
 
@@ -87,9 +89,9 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   _Criterios de aceptación_:
 
-1. La interfaz desarrollada con Angular y Angular Material se adapta a diferentes resoluciones.
-2. Se realizan pruebas de usabilidad en varios navegadores y dispositivos.
-3. Se cumplen las pautas de accesibilidad básicas (WCAG 2.1).
+  1. La interfaz desarrollada con Angular y Angular Material se adapta a diferentes resoluciones.
+  2. Se realizan pruebas de usabilidad en varios navegadores y dispositivos.
+  3. Se cumplen las pautas de accesibilidad básicas (WCAG 2.1).
 
 ---
 
@@ -101,104 +103,102 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 - **Frontend**: Angular 19, Angular Material, RxJS, JWT Guards.
 - **Infra**: Docker, Render (API), Vercel (SPA), Mongo Atlas.
 
-* Backend:. [https://github.com/lenvigo/janoo-back](https://github.com/lenvigo/janoo-back)
+* **Backend**:. [https://github.com/lenvigo/janoo-back](https://github.com/lenvigo/janoo-back)
 
-* Frontend: [https://github.com/lenvigo/janoo-front-app](https://github.com/lenvigo/janoo-front-app)
+* **Frontend**: [https://github.com/lenvigo/janoo-front-app](https://github.com/lenvigo/janoo-front-app)
 
 ## 3.1 Backend: REST Server con Clean Architecture
 
-src/
-├── presentation/ \# Capa de presentación
-│ ├── auth/ \# Autenticación
-│ ├── checkin/ \# Control de asistencia
-│ ├── incident/ \# Gestión de incidencias
-│ ├── schedule/ \# Programación
-│ ├── user/ \# Gestión de usuarios
-│ ├── vacation/ \# Gestión de vacaciones
-│ ├── middlewares/ \# Middlewares personalizados
-│ ├── routes.ts \# Definición de rutas
-│ └── server.ts \# Configuración del servidor
-│
-├── domain/ \# Capa de dominio
-│ ├── datasources/ \# Fuentes de datos
-│ ├── dtos/ \# Data Transfer Objects
-│ ├── entities/ \# Entidades del dominio
-│ ├── errors/ \# Errores personalizados
-│ ├── repositories/ \# Interfaces de repositorios
-│ ├── use-cases/ \# Casos de uso
-│ └── index.ts \# Exportaciones del dominio
-│
-├── infrastructure/ \# Capa de infraestructura
-│ ├── datasources/ \# Implementaciones de fuentes de datos
-│ ├── respositories/ \# Implementaciones de repositorios
-│ ├── mappers/ \# Mapeadores de datos
-│ └── index.ts \# Exportaciones de infraestructura
-│
-├── data/ \# Capa de datos
-│
-├── config/ \# Configuración general
-│
-├── types/ \# Tipos y interfaces
-│
-├── \_\_tests\_\_/ \# Pruebas unitarias
-│
-├── \_\_integration\_\_/ \# Pruebas de integración
-│
-└── app.ts \# Punto de entrada
+```text
+      src/
+      ├── presentation/        # Capa de presentación
+      │   ├── auth/            # Autenticación
+      │   ├── checkin/         # Control de asistencia
+      │   ├── incident/        # Gestión de incidencias
+      │   ├── schedule/        # Programación
+      │   ├── user/            # Gestión de usuarios
+      │   ├── vacation/        # Gestión de vacaciones
+      │   ├── middlewares/     # Middlewares personalizados
+      │   ├── routes.ts        # Definición de rutas
+      │   └── server.ts        # Configuración del servidor
+      ├── domain/              # Capa de dominio
+      │   ├── datasources/     # Fuentes de datos
+      │   ├── dtos/            # Data Transfer Objects
+      │   ├── entities/        # Entidades del dominio
+      │   ├── errors/          # Errores personalizados
+      │   ├── repositories/    # Interfaces de repositorios
+      │   ├── use-cases/       # Casos de uso
+      │   └── index.ts         # Exportaciones del dominio
+      ├── infrastructure/      # Capa de infraestructura
+      │   ├── datasources/     # Implementaciones de fuentes de datos
+      │   ├── repositories/    # Implementaciones de repositorios
+      │   ├── mappers/         # Mapeadores de datos
+      │   └── index.ts         # Exportaciones de infraestructura
+      ├── data/                # Capa de datos
+      ├── config/              # Configuración general
+      ├── types/               # Tipos y interfaces
+      ├── __tests__/           # Pruebas unitarias
+      ├── __integration__/     # Pruebas de integración
+      └── app.ts               # Punto de entrada
+```
 
-#### Tecnologías del backend:
+### Tecnologías del backend:
 
 - Servidor: Node.js y Express.js.
 - Persistencia: MongoDB administrada con Mongoose.
 - Seguridad: JWT para autenticación y Bcrypt para el cifrado de contraseñas.
 
-Para el backend de este proyecto se eligieron Node.js, Express.js, MongoDB administrada con Mongoose junto con JWT y Bcrypt por las siguientes razones:
+  ***
 
-    - Servidor: Node.js y Express.js
+  Para el backend de este proyecto se eligieron Node.js, Express.js, MongoDB administrada con Mongoose junto con JWT y Bcrypt por las siguientes razones:
 
-    Capacidad para ejecutar JavaScript en el servidor de manera asíncrona y eficiente, lo que resulta ideal para aplicaciones en tiempo real y de alta concurrencia. Express.js, al ser un framework minimalista y flexible, facilita la creación de APIs REST mediante la utilización de middleware para manejar peticiones, errores y otras funcionalidades de forma modular.
+  - Servidor: Node.js y Express.js
 
-    - Persistencia: MongoDB administrada con Mongoose
+  Capacidad para ejecutar JavaScript en el servidor de manera asíncrona y eficiente, lo que resulta ideal para aplicaciones en tiempo real y de alta concurrencia. Express.js, al ser un framework minimalista y flexible, facilita la creación de APIs REST mediante la utilización de middleware para manejar peticiones, errores y otras funcionalidades de forma modular.
 
-    MongoDB es una base de datos NoSQL que ofrece alta escalabilidad y flexibilidad en el manejo de datos, lo que permite adaptar los esquemas sin la rigidez de las bases de datos relacionales. Mongoose se utiliza como una capa de modelado de datos, lo que facilita la definición, validación y transformación de los datos al interactuar con MongoDB.
+  - Persistencia: MongoDB administrada con Mongoose
 
-    - Seguridad: JWT para autenticación y Bcrypt para el cifrado de contraseñas
+  MongoDB es una base de datos NoSQL que ofrece alta escalabilidad y flexibilidad en el manejo de datos, lo que permite adaptar los esquemas sin la rigidez de las bases de datos relacionales. Mongoose se utiliza como una capa de modelado de datos, lo que facilita la definición, validación y transformación de los datos al interactuar con MongoDB.
 
-    JWT (JSON Web Tokens) proporciona un método seguro y escalable para manejar la autenticación sin necesidad de mantener un estado de sesión en el servidor. Esto facilita el desarrollo de aplicaciones distribuidas y mejora el rendimiento al reducir la sobrecarga del servidor. Bcrypt es un algoritmo de cifrado robusto que permite almacenar contraseñas de manera segura, minimizando el riesgo ante ataques de fuerza bruta y asegurando la integridad de los datos de los usuarios.
+  - Seguridad: JWT para autenticación y Bcrypt para el cifrado de contraseñas
+
+  JWT (JSON Web Tokens) proporciona un método seguro y escalable para manejar la autenticación sin necesidad de mantener un estado de sesión en el servidor. Esto facilita el desarrollo de aplicaciones distribuidas y mejora el rendimiento al reducir la sobrecarga del servidor. Bcrypt es un algoritmo de cifrado robusto que permite almacenar contraseñas de manera segura, minimizando el riesgo ante ataques de fuerza bruta y asegurando la integridad de los datos de los usuarios.
 
 ![Estructura Back](docs/capas-back.png)
 
 ## 3.2 Frontend: Aplicación en Angular {#3.2-frontend:-aplicación-en-angular}
 
-src/
-├── app/
-│ ├── auth/ \# Módulo de autenticación
-│ │ ├── login/ \# Componente de inicio de sesión
-│ │ └── register/ \# Componente de registro
-│ │
-│ ├── core/ \# Servicios y utilidades core
-│ │ ├── guards/ \# Guards de autenticación
-│ │ ├── interceptors/ \# Interceptores HTTP
-│ │ ├── models/ \# Interfaces y tipos
-│ │ └── services/ \# Servicios principales
-│ │
-│ ├── features/ \# Módulos de funcionalidad
-│ │ ├── checkins/ \# Gestión de fichajes
-│ │ ├── incidents/ \# Gestión de incidencias
-│ │ ├── users/ \# Gestión de usuarios
-│ │ └── vacations/ \# Gestión de vacaciones
-│ │
-│ ├── shared/ \# Componentes y utilidades compartidas
-│ │ └── components/ \# Componentes reutilizables
-│ │
-│ ├── app.component.\* \# Componente raíz
-│ ├── app.module.ts \# Módulo principal
-│ ├── app-routing.module.ts \# Configuración de rutas
-│ └── app.config.ts \# Configuración de la aplicación
-│
-├── assets/ \# Recursos estáticos
-├── environments/ \# Configuraciones por entorno
-└── styles/ \# Estilos globales
+```
+          src/
+          ├── app/
+          │ ├── auth/ \# Módulo de autenticación
+          │ │ ├── login/ \# Componente de inicio de sesión
+          │ │ └── register/ \# Componente de registro
+          │ │
+          │ ├── core/ \# Servicios y utilidades core
+          │ │ ├── guards/ \# Guards de autenticación
+          │ │ ├── interceptors/ \# Interceptores HTTP
+          │ │ ├── models/ \# Interfaces y tipos
+          │ │ └── services/ \# Servicios principales
+          │ │
+          │ ├── features/ \# Módulos de funcionalidad
+          │ │ ├── checkins/ \# Gestión de fichajes
+          │ │ ├── incidents/ \# Gestión de incidencias
+          │ │ ├── users/ \# Gestión de usuarios
+          │ │ └── vacations/ \# Gestión de vacaciones
+          │ │
+          │ ├── shared/ \# Componentes y utilidades compartidas
+          │ │ └── components/ \# Componentes reutilizables
+          │ │
+          │ ├── app.component.\* \# Componente raíz
+          │ ├── app.module.ts \# Módulo principal
+          │ ├── app-routing.module.ts \# Configuración de rutas
+          │ └── app.config.ts \# Configuración de la aplicación
+          │
+          ├── assets/ \# Recursos estáticos
+          ├── environments/ \# Configuraciones por entorno
+          └── styles/ \# Estilos globales
+```
 
 ### Tecnologías del frontend:
 
@@ -207,7 +207,9 @@ src/
 - Ruteo: Angular Router.
 - Seguridad y Gestión de Sesiones: Angular Guards y almacenamiento de JWT en el localStorage.
 
-Para el frontend de este proyecto se eligieron Angular, TypeScript, HTML5, SCSS, Angular Material, Angular Router y Angular Guards (junto con el almacenamiento de JWT en el localStorage) por las siguientes razones:
+---
+
+    Para el frontend de este proyecto se eligieron Angular, TypeScript, HTML5, SCSS, Angular Material, Angular Router y Angular Guards (junto con el almacenamiento de JWT en el localStorage) por las siguientes razones:
 
     - Angular:
 
@@ -241,14 +243,14 @@ Para el frontend de este proyecto se eligieron Angular, TypeScript, HTML5, SCSS,
 
 #### **Dedicación inicial semanal prevista:** 5-15 horas/semana
 
-#### Estimación horas de trabajo:
+     Estimación horas de trabajo:
 
-- Análisis y diseño: 30–40 horas.
-- Desarrollo del Backend (REST server con Clean Architecture):
-- Implementación del módulo de autenticación, conexión a la base de datos y endpoints CRUD: 120–150 horas.
-- Desarrollo del Frontend (Angular):
-- Creación de la interfaz de usuario, componentes (login, registro, dashboard) e integración con la API: 80–100 horas.
-- Integración, pruebas y despliegue: 30–40 horas.
+    - Análisis y diseño: 30–40 horas.
+    - Desarrollo del Backend (REST server con Clean Architecture):
+    - Implementación del módulo de autenticación, conexión a la base de datos y endpoints CRUD: 120–150 horas.
+    - Desarrollo del Frontend (Angular):
+    - Creación de la interfaz de usuario, componentes (login, registro, dashboard) e integración con la API: 80–100 horas.
+    - Integración, pruebas y despliegue: 30–40 horas.
 
 ## Cronograma y Gestión del tiempo
 
@@ -267,7 +269,8 @@ Para el frontend de este proyecto se eligieron Angular, TypeScript, HTML5, SCSS,
 |  Documentación  |              Readme               |     3     | 16/06/2025 a 17/06/2025 |
 
 ![Gantt Inicial](docs/gantt-ini.png)
-![Gantt Real](docs/gantt_fin.png)
+
+![Gantt Real](docs/gantt-fin.png)
 
 ## Alcance
 
@@ -286,9 +289,9 @@ Para el frontend de este proyecto se eligieron Angular, TypeScript, HTML5, SCSS,
 # 5\. Clockify tiempo invertido.
 
 ![Tabla tiempo invertido](docs/tabla.png)
-![Diagrama tiempo invertido](docs/tarea-horas.png)
+![Diagrama tiempo invertido](docs/tareas-horas.png)
 
-# 6\. Recursos e infraestructura. Presupusto.
+# 6\. Recursos e infraestructura. Presupuesto.
 
 ## Modelo Financiero Inicial
 
@@ -352,10 +355,13 @@ Los gastos mensuales se reducen a servicios domésticos proporcionales al uso pr
 
 ---
 
-```
+---
+
+---
+
+---
 
 # Janoo Front App
-```
 
 Aplicación frontend para la gestión de fichajes, desarrollada con Angular.
 
