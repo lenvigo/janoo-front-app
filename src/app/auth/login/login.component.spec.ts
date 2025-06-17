@@ -3,7 +3,6 @@ import {
   TestBed,
   fakeAsync,
   tick,
-  waitForAsync,
 } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -11,11 +10,11 @@ import { AuthService } from '../../core/services/auth.service';
 import { TokenStorageService } from '../../core/services/token-storage.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { of, throwError, defer } from 'rxjs';
+import { of, throwError, timer } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { flushMicrotasks } from '@angular/core/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -30,12 +29,8 @@ describe('LoginComponent', () => {
     name: 'Test User',
     email: 'test@example.com',
     password: '123456',
-    roles: ['user'],
+    roles: ['USER_ROLE'],
   };
-
-  const loginResponse = defer(() =>
-    Promise.resolve({ token: 'fake-token', user: mockUser })
-  );
 
   beforeEach(async () => {
     authServiceSpy = jasmine.createSpyObj('AuthService', ['login']);
@@ -45,7 +40,6 @@ describe('LoginComponent', () => {
       'saveToken',
       'saveUser',
     ]);
-    authServiceSpy.login.and.returnValue(loginResponse);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -92,18 +86,17 @@ describe('LoginComponent', () => {
       email: 'test@example.com',
       password: '123456',
     });
-    const loginResponse = defer(() =>
-      Promise.resolve({ token: 'fake-token', user: mockUser })
+    authServiceSpy.login.and.returnValue(
+      timer(100).pipe(map(() => ({ token: 'fake-token', user: mockUser })))
     );
-    authServiceSpy.login.and.returnValue(loginResponse);
-    fixture.detectChanges();
     component.onSubmit();
+    fixture.detectChanges();
     expect(component.isLoading).toBeTrue();
-    tick();
     expect(authServiceSpy.login).toHaveBeenCalledWith(
       'test@example.com',
       '123456'
     );
+    tick(100);
     expect(component.isLoading).toBeFalse();
     expect(toastrSpy.success).toHaveBeenCalledWith(
       'Login successful',
@@ -111,7 +104,7 @@ describe('LoginComponent', () => {
     );
   }));
 
-  it('should show specific error toast if error response has error.error', waitForAsync(async () => {
+  it('should show specific error toast if error response has error.error', fakeAsync(() => {
     component.loginForm.setValue({
       email: 'test@example.com',
       password: '1234568',
@@ -123,12 +116,15 @@ describe('LoginComponent', () => {
       },
     };
     authServiceSpy.login.and.returnValue(
-      defer(() => throwError(() => errorResponse))
+      timer(100).pipe(
+        map(() => {
+          throw errorResponse;
+        })
+      )
     );
     fixture.detectChanges();
     component.onSubmit();
-
-    await fixture.whenStable(); // <-- Espera a que todo termine
+    tick(100);
 
     expect(component.isLoading).toBeFalse();
     expect(toastrSpy.error).toHaveBeenCalledWith(
@@ -137,19 +133,22 @@ describe('LoginComponent', () => {
     );
   }));
 
-  it('should show generic error toast if error response does not have error.error', waitForAsync(async () => {
+  it('should show generic error toast if error response does not have error.error', fakeAsync(() => {
     component.loginForm.setValue({
       email: 'test@example.com',
       password: '123456',
     });
     const errorResponse = { error: {} };
     authServiceSpy.login.and.returnValue(
-      defer(() => throwError(() => errorResponse))
+      timer(100).pipe(
+        map(() => {
+          throw errorResponse;
+        })
+      )
     );
     fixture.detectChanges();
     component.onSubmit();
-
-    await fixture.whenStable();
+    tick(100);
 
     expect(component.isLoading).toBeFalse();
     expect(toastrSpy.error).toHaveBeenCalledWith(
