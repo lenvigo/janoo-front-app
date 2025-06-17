@@ -8,6 +8,7 @@ import { VacationService } from '../../../core/services/vacation.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-vacation-list',
@@ -44,7 +45,8 @@ export class VacationListComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {
     this.dataSource = new MatTableDataSource();
   }
@@ -82,6 +84,7 @@ export class VacationListComponent implements OnInit {
       error: (error) => {
         console.error('Error loading vacations:', error);
         this.isLoading = false;
+        this.toastr.error('Error al cargar las vacaciones');
       },
     });
   }
@@ -203,10 +206,12 @@ export class VacationListComponent implements OnInit {
   approveVacation(vacationId: string): void {
     this.vacationService.approveVacation(vacationId).subscribe({
       next: () => {
+        this.toastr.success('Solicitud aprobada correctamente');
         this.loadVacations();
       },
       error: (error) => {
         console.error('Error approving vacation:', error);
+        this.toastr.error('Error al aprobar la solicitud');
       },
     });
   }
@@ -214,10 +219,12 @@ export class VacationListComponent implements OnInit {
   rejectVacation(vacationId: string): void {
     this.vacationService.rejectVacation(vacationId).subscribe({
       next: () => {
+        this.toastr.success('Solicitud rechazada correctamente');
         this.loadVacations();
       },
       error: (error) => {
         console.error('Error rejecting vacation:', error);
+        this.toastr.error('Error al rechazar la solicitud');
       },
     });
   }
