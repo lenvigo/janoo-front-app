@@ -166,7 +166,7 @@ Para el backend de este proyecto se eligieron Node.js, Express.js, MongoDB admin
 
     JWT (JSON Web Tokens) proporciona un método seguro y escalable para manejar la autenticación sin necesidad de mantener un estado de sesión en el servidor. Esto facilita el desarrollo de aplicaciones distribuidas y mejora el rendimiento al reducir la sobrecarga del servidor. Bcrypt es un algoritmo de cifrado robusto que permite almacenar contraseñas de manera segura, minimizando el riesgo ante ataques de fuerza bruta y asegurando la integridad de los datos de los usuarios.
 
-![Estructura Back](docs/capas-back.png)
+![Estructura Back](capas-back.png)
 
 ## 3.2 Frontend: Aplicación en Angular {#3.2-frontend:-aplicación-en-angular}
 
@@ -233,7 +233,7 @@ Para el frontend de este proyecto se eligieron Angular, TypeScript, HTML5, SCSS,
 
     La implementación de Angular Guards ayuda a proteger las rutas y asegurar que solo los usuarios autenticados puedan acceder a áreas sensibles de la aplicación. El uso de JWT almacenado en el localStorage, junto con los guards, proporciona una solución segura y sencilla para la gestión de sesiones, evitando accesos no autorizados y manteniendo la integridad de la información de los usuarios.
 
-## ![Estructura Front](docs/capas-front.png)
+## ![Estructura Front](capas-front.png)
 
 # 4\. Planificación y Cronograma
 
@@ -266,8 +266,8 @@ Para el frontend de este proyecto se eligieron Angular, TypeScript, HTML5, SCSS,
 |      MVP5       |            Despliegue             |    30     | 12/06/2025 a 15/06/2025 |
 |  Documentación  |              Readme               |     3     | 16/06/2025 a 17/06/2025 |
 
-![Gantt Inicial](docs/gantt-ini.png)
-![Gantt Real](docs/gantt_fin.png)
+![Gantt Inicial](gantt-ini.png)
+![Gantt Real](gantt_fin.png)
 
 ## Alcance
 
@@ -285,8 +285,8 @@ Para el frontend de este proyecto se eligieron Angular, TypeScript, HTML5, SCSS,
 
 # 5\. Clockify tiempo invertido.
 
-![Tabla tiempo invertido](docs/tabla.png)
-![Diagrama tiempo invertido](docs/tarea-horas.png)
+![Tabla tiempo invertido](tabla.png)
+![Diagrama tiempo invertido](tarea-horas.png)
 
 # 6\. Recursos e infraestructura. Presupusto.
 
@@ -351,85 +351,3 @@ Los gastos mensuales se reducen a servicios domésticos proporcionales al uso pr
     - Licencia/Coste: Varias de estas herramientas ofrecen planes gratuitos, con opciones de pago que incluyen características adicionales.
 
 ---
-
-```
-
-# Janoo Front App
-```
-
-Aplicación frontend para la gestión de fichajes, desarrollada con Angular.
-
-````
-## Características Principales
-
-- **Autenticación**: Sistema de login y registro
-- **Gestión de Usuarios**: Perfiles, roles y permisos
-- **Fichajes**: Control de entrada/salida
-- **Incidencias**: Reporte y seguimiento de incidencias
-- **Vacaciones**: Solicitud y gestión de vacaciones
-
-## Tecnologías
-
-- Angular
-- Angular Material
-- RxJS
-- NgRx (para gestión de estado)
-- SCSS
-- TypeScript
-
-## Requisitos
-
-- Node.js 22.x
-- npm 10.x
-
-## Instalación
-
-1. Clonar el repositorio:
-
-```bash
-git clone [https://github.com/lenvigo/janoo-front-app]
-````
-
-2. Instalar dependencias:
-
-```bash
-npm install
-```
-
-3. Configurar variables de entorno:
-   - Copiar `src/environments/environment.example.ts` a `src/environments/environment.ts`
-   - Ajustar las variables según el entorno
-
-## Desarrollo
-
-Para iniciar el servidor de desarrollo:
-
-```bash
-ng serve
-```
-
-4. Iniciar el servidor de desarrollo:
-
-```bash
-npm start
-```
-
-## Scripts Disponibles
-
-- `npm start`: Inicia el servidor de desarrollo
-- `npm run build`: Construye la aplicación para producción
-- `npm test`: Ejecuta los tests unitarios
-
-## CI/CD
-
-El proyecto utiliza GitHub Actions para la integración continua.
-
-## Contribución
-
-1. Crear una rama desde `develop`
-2. Realizar cambios
-3. Crear un Pull Request a `develop`
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
