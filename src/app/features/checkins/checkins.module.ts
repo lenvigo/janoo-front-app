@@ -21,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 const routes: Routes = [
   {
@@ -31,14 +32,7 @@ const routes: Routes = [
   {
     path: '',
     component: CheckinListComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { view: 'own' },
-  },
-  {
-    path: 'list',
-    component: CheckinListComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['ADMIN_ROLE', 'MANAGER_ROLE'], view: 'all' },
+    canActivate: [AuthGuard],
   },
 ];
 @NgModule({
@@ -60,6 +54,7 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes),
   ],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' }],
   exports: [CheckinFormComponent, CheckinListComponent],
 })
 export class CheckinsModule {}

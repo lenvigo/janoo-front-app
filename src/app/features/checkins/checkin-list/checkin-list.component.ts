@@ -26,8 +26,10 @@ export class CheckinListComponent implements OnInit {
   isAdmin = false;
   isManager = false;
   dateRange: FormGroup;
-  viewMode: 'own' | 'all' = 'own';
 
+  getUserName(id: string): string {
+    return this.usersMap[id]?.name ?? 'Usuario no encontrado';
+  }
   constructor(
     private checkinService: CheckinService,
     private userService: UserService,
@@ -46,7 +48,7 @@ export class CheckinListComponent implements OnInit {
   ngOnInit(): void {
     this.isAdmin = this.userService.isAdmin();
     this.isManager = this.userService.isManager();
-    this.checkViewMode();
+
     this.loadCheckins();
     if (this.isAdmin || this.isManager) {
       this.userService.getAllUsers().subscribe((users) => {
@@ -56,15 +58,26 @@ export class CheckinListComponent implements OnInit {
         });
       });
     }
+    this.dateRange.valueChanges.subscribe((val) => {
+      this.filterByDateRange(val);
+    });
   }
 
+  filterByDateRange(val: { start: Date; end: Date }) {
+    if (!val.start && !val.end) {
+      this.dataSource.data = this.checkins;
+      return;
+    }
+    this.dataSource.data = this.checkins.filter((chk) => {
+      const date = new Date(chk.timestamp);
+      const start = val.start ? new Date(val.start) : null;
+      const end = val.end ? new Date(val.end) : null;
+      if (end) end.setHours(23, 59, 59, 999);
+      return (!start || date >= start) && (!end || date <= end);
+    });
+  }
   get usersArray(): User[] {
     return Object.values(this.usersMap);
-  }
-  private checkViewMode(): void {
-    this.route.data.subscribe((data) => {
-      this.viewMode = data['view'] || 'own';
-    });
   }
 
   loadCheckins(): void {
@@ -115,9 +128,13 @@ export class CheckinListComponent implements OnInit {
   }
 
   loadUsers(): void {
-    this.userService.listAll().subscribe({
+    this.userService.getAllUsers().subscribe({
       next: (users) => {
         this.users = users;
+        this.usersMap = users.reduce((acc, user) => {
+          acc[user.id] = user;
+          return acc;
+        }, {} as { [key: string]: User });
       },
       error: (error) => {
         console.error('Error loading users:', error);
@@ -161,7 +178,7 @@ export class CheckinListComponent implements OnInit {
     const data = this.dataSource.data.map((checkin) => {
       const user = this.users.find((u) => u.id === checkin.user);
       return {
-        Usuario: user ? user.name : checkin.user, // Si no encuentra el usuario, muestra el id
+        Usuario: this.getUserName(checkin.user),
         Tipo: checkin.type,
         Fecha: new Date(checkin.timestamp).toLocaleString(),
       };
