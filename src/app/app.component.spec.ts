@@ -45,6 +45,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { ButtonsComponent } from './shared/buttons/buttons.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -92,7 +93,7 @@ describe('AppComponent', () => {
         IncidentsModule, // Incidents
         VacationsModule, // Vacations
       ],
-      declarations: [AppComponent, NavbarComponent],
+      declarations: [AppComponent, NavbarComponent, ButtonsComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);

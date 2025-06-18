@@ -2,7 +2,7 @@
   <div class="header">
     <div class="header-title">
       <h2>{{isAdmin || isManager ? 'Solicitudes de Vacaciones' : 'Mis Solicitudes de Vacaciones'}}</h2>
-      <div class="vacation-stats" *ngIf="!isAdmin && !isManager" aria-label="Estadísticas de vacaciones">
+      <!-- <div class="vacation-stats" *ngIf="!isAdmin && !isManager" aria-label="Estadísticas de vacaciones">
         <span class="stat-item">
           <mat-icon aria-hidden="true">event</mat-icon>
           Días disponibles: {{availableDays}}
@@ -11,7 +11,7 @@
           <mat-icon aria-hidden="true">event_available</mat-icon>
           Días usados: {{usedDays}}
         </span>
-      </div>
+      </div> -->
     </div>
     <button mat-raised-button color="primary" (click)="createVacation()" *ngIf="!isAdmin && !isManager"
       aria-label="Crear nueva solicitud de vacaciones">
@@ -60,7 +60,7 @@
           <div class="user-info">
             <mat-icon class="user-icon" aria-hidden="true">person</mat-icon>
             <ng-container *ngIf="isAdmin || isManager; else onlyYou">
-              {{ usersMap[vacation.user].name || 'Usuario no encontrado' }} <!--here-->
+              {{getUserName(vacation.userId) }}
             </ng-container>
             <ng-template #onlyYou>
               Tú

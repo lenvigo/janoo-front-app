@@ -36,6 +36,9 @@ export class VacationListComponent implements OnInit {
   availableDays = 0;
   usedDays = 0;
   view: string = '';
+  getUserName(id: string): string {
+    return this.usersMap[id]?.name ?? 'Usuario no encontrado';
+  }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
