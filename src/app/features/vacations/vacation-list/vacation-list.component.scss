@@ -1,9 +1,11 @@
 .vacation-list-container {
-  max-width: 1200px;
+  max-width: 90%;
   margin: 2rem auto;
   padding: 2rem;
   position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgb(1, 22, 1);
+  border-radius: 12px;
 
   .header {
     display: flex;
@@ -94,4 +96,10 @@ table {
 .mat-column-startDate,
 .mat-column-endDate {
   width: 120px;
+}
+
+.mat-paginator {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
 }

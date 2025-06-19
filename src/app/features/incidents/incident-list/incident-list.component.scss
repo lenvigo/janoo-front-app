@@ -1,7 +1,10 @@
 .incident-list-container {
   padding: 20px;
-  max-width: 1200px;
+  max-width: 90%;
   margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgb(1, 22, 1);
+  border-radius: 12px;
 }
 
 .header {
@@ -16,19 +19,10 @@
   }
 }
 
-.search-field {
+.search-field,
+.filters-container {
   width: 100%;
-  margin-bottom: 20px;
-}
-
-.table-container {
-  overflow: auto;
-  background: white;
-  border-radius: 4px;
-}
-
-table {
-  width: 100%;
+  margin: 0;
 }
 
 .mat-column-actions {

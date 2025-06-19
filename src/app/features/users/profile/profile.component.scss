@@ -4,8 +4,9 @@
   padding: 2rem;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgb(1, 22, 1);
+  border-radius: 12px;
   h2 {
     margin-bottom: 2rem;
     color: #555;
@@ -90,7 +91,7 @@
   padding: 1rem;
   margin: 0 auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  border: 2px solid green;
+  border: 1px dashed rgb(1, 22, 1);
   border-radius: 12px;
 }
 
@@ -99,28 +100,45 @@
   margin-bottom: 1rem;
 }
 
-// .quick-actions {
-//   margin-top: 2rem;
-
-//   .action-buttons {
-//     display: grid;
-//     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-//     gap: 1rem;
-//     margin-top: 1rem;
-
-//     button {
-//       display: flex;
-//       align-items: center;
-//       justify-content: center;
-//       gap: 0.5rem;
-//       padding: 0.75rem;
-//     }
-//   }
-// }
-
 .loading {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 200px;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+    margin: 1rem auto;
+
+    h2,
+    h3 {
+      text-align: center;
+    }
+    .profile-info {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      margin-right: 1rem;
+    }
+
+    .user-details h3 {
+      font-size: 1.25rem;
+    }
+  }
+
+  .admin-section {
+    .admin-actions {
+      flex-direction: column;
+      align-items: center;
+      button {
+        width: 70%;
+      }
+    }
+  }
 }
