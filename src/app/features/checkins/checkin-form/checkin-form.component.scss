@@ -1,10 +1,10 @@
 .checkin-container {
-  width: 600px;
-  margin: 40px auto;
+  width: 70%;
+  margin: 2rem auto;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  background: #fff;
-  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgb(1, 22, 1);
+  border-radius: 12px;
 
   h2 {
     text-align: center;
@@ -30,13 +30,21 @@
     }
   }
 
-  table {
-    width: 100%;
-  }
-
   .loading {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .checkin-container {
+    width: 90%;
+    padding: 1rem;
+
+    .buttons button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
   }
 }

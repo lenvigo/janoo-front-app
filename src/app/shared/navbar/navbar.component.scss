@@ -19,7 +19,7 @@ mat-toolbar {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin: 0 0.5rem 0.5rem;
+  margin: 0 0.5rem 2rem;
   padding: 0.5rem;
   //background-color: #1976d2;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -28,9 +28,9 @@ mat-toolbar {
 .nav-buttons {
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   margin-right: 3rem;
   margin-left: 3rem;
@@ -40,21 +40,20 @@ mat-toolbar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  background-color: white;
-  color: rgb(9, 22, 15);
+  padding: 1rem;
+  font-weight: 600;
 
   mat-icon {
     margin-right: 0.25rem;
   }
   &:hover {
-    background-color: rgba(9, 22, 15, 0.7);
+    background-color: rgb(7, 44, 3);
     color: #ffffff;
   }
 
-  &:focus {
-    outline: 0.0635rem solid rgb(14, 63, 9);
+  &:active {
+    background-color: rgb(159, 231, 151);
+    color: #222;
   }
 
   // Estilos específicos para el botón de login
@@ -80,7 +79,6 @@ mat-toolbar {
   }
 }
 
-// Media queries para responsividad
 @media (max-width: 768px) {
   mat-toolbar {
     height: auto;
@@ -91,6 +89,7 @@ mat-toolbar {
     width: 100%;
     justify-content: center;
     margin-top: 1rem;
+    flex-wrap: wrap;
   }
 
   .nav-button {

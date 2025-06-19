@@ -13,7 +13,7 @@
         </span>
       </div> -->
     </div>
-    <button mat-raised-button color="primary" (click)="createVacation()" *ngIf="!isAdmin && !isManager"
+    <button mat-raised-button color="primary" routerLink="/vacations/form" aria-label="Solicitar vacaciones"
       aria-label="Crear nueva solicitud de vacaciones">
       <mat-icon aria-hidden="true">add</mat-icon>
       Nueva Solicitud
