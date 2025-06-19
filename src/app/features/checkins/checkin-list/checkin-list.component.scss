@@ -1,16 +1,19 @@
 .checkin-list-container {
   width: 800px;
-  margin: 40px auto;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin: 2rem auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgb(1, 22, 1);
+  border-radius: 12px;
+  overflow: hidden;
 
   h2 {
     text-align: center;
     margin-bottom: 20px;
   }
 
-  table {
-    width: 100%;
-  }
+  // table {
+  //   width: 100%;
+  // }
 
   .loading {
     display: flex;
@@ -26,5 +29,11 @@
     &:focus {
       outline: 0.0635rem solid rgb(14, 63, 9);
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .checkin-list-container {
+    width: 90%;
   }
 }
