@@ -19,7 +19,7 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
 - Arquitectura escalable: Diseñar la solución para facilitar futuras ampliaciones (nuevos módulos, integraciones, etc.). ✅
 
-- Compatibilidad multiplataforma: Asegurar que la aplicación funcione correctamente en diversos dispositivos. ❕❗
+- Compatibilidad multiplataforma: Asegurar que la aplicación funcione correctamente en diversos dispositivos. ✅
 
 ### Historias de Usuario :
 
@@ -49,9 +49,9 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   Criterios de aceptación:
 
-  1. El calendario es accesible desde el panel de control.
-  2. Se distinguen visualmente los días festivos (por ejemplo, con un color específico o ícono) y los días de vacaciones personales.
-  3. La información se actualiza automáticamente en función de las aprobaciones.
+  1. El calendario es accesible desde el panel de control. ❕❗
+  2. Se distinguen visualmente los días festivos (por ejemplo, con un color específico o ícono) y los días de vacaciones personales. ❕❗
+  3. La información se actualiza automáticamente en función de las aprobaciones. ✅
 
 - ##### Historia 4: Reporte de asistencia para administración (Futuro) ⏳ planificado
 
@@ -59,10 +59,10 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   Criterios de aceptación:
 
-  1. La herramienta permite filtrar por empleado, departamento y rango de fechas.
-  2. Se muestran totales resumidos y desgloses por período.
-  3. Sistema de autenticación
-  4. Valorar que el reporte se pueda exportar en formatos estándar.
+  1. La herramienta permite filtrar por empleado, departamento y rango de fechas.❕❗
+  2. Se muestran totales resumidos y desgloses por período. ❕❗
+  3. Sistema de autenticación ✅
+  4. Valorar que el reporte se pueda exportar en formatos estándar. ✅
 
 - ##### Historia 5: Registro de nuevo usuario ✅
 
@@ -83,7 +83,7 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
   1. Al introducir credenciales válidas, se genera un token JWT que se almacena en el localStorage.
   2. Se muestran mensajes de error en caso de credenciales incorrectas.
 
-- ##### Historia 7: Interfaz responsive y accesible ❕❗
+- ##### Historia 7: Interfaz responsive y accesible ✅
 
   Como usuario. _Quiero que la aplicación se adapte correctamente a distintos dispositivos para que pueda utilizar el sistema de manera cómoda desde cualquier dispositivo_
 
@@ -91,7 +91,7 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
   1. La interfaz desarrollada con Angular y Angular Material se adapta a diferentes resoluciones.
   2. Se realizan pruebas de usabilidad en varios navegadores y dispositivos.
-  3. Se cumplen las pautas de accesibilidad básicas (WCAG 2.1).
+  3. Se cumplen las pautas de accesibilidad básicas (WCAG 2.1). ❕❗
 
 ---
 
@@ -103,9 +103,13 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 - **Frontend**: Angular 19, Angular Material, RxJS, JWT Guards.
 - **Infra**: Docker, Render (API), Vercel (SPA), Mongo Atlas.
 
-* **Backend**:. [https://github.com/lenvigo/janoo-back](https://github.com/lenvigo/janoo-back)
+* **Backend**: [https://github.com/lenvigo/janoo-back](https://github.com/lenvigo/janoo-back)
+* **Backend CI**: [https://github.com/lenvigo/janoo-back/actions](https://github.com/lenvigo/janoo-back/actions)
+* **Backend CD**: [https://janoo.onrender.com](https://janoo.onrender.com)
 
 * **Frontend**: [https://github.com/lenvigo/janoo-front-app](https://github.com/lenvigo/janoo-front-app)
+* **Frontend CI**: [https://github.com/lenvigo/janoo-front-app/actions](https://github.com/lenvigo/janoo-front-app/actions)
+* **Frontend CD**: [https://janoo.vercel.app](https://janoo.vercel.app)
 
 ## 3.1 Backend: REST Server con Clean Architecture
 
