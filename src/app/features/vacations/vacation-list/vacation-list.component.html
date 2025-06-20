@@ -38,7 +38,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field *ngIf="isAdmin || isManager">
+    <!-- <mat-form-field *ngIf="isAdmin || isManager">
       <mat-label>Filtrar por usuario</mat-label>
       <mat-select (selectionChange)="filterByUser($event.value)" aria-label="Filtrar solicitudes por usuario">
         <mat-option value="all">Todos los usuarios</mat-option>
@@ -46,7 +46,7 @@
           {{user.name}}
         </mat-option>
       </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
   </div>
 
   <div class="table-container mat-elevation-z8">

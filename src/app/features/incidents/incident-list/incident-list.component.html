@@ -8,12 +8,12 @@
     </button>
   </div>
 
-  <mat-form-field class="search-field">
+  <!-- <mat-form-field class="search-field">
     <mat-label>Buscar incidencias</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Buscar por título o descripción" #input
       aria-label="Buscar incidencias por título o descripción">
     <mat-icon matSuffix aria-hidden="true">search</mat-icon>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <div class="filters-container" *ngIf="isAdmin || isManager">
     <mat-form-field>
