@@ -272,7 +272,7 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 |      MVP5       |            Despliegue             |    30     | 12/06/2025 a 15/06/2025 |
 |  Documentación  |              Readme               |     3     | 16/06/2025 a 17/06/2025 |
 
-![Gantt Inicial](docs/gantt-ini.png)
+![Gantt Inicial](docs/gantt-ini.PNG)
 
 ![Gantt Real](docs/gantt-fin.png)
 
@@ -292,7 +292,7 @@ Personalmente busco avanzar desde un rol de maquetación web hacia un perfil ful
 
 # 5\. Clockify tiempo invertido.
 
-![Tabla tiempo invertido](docs/tabla.png)
+![Tabla tiempo invertido](docs/tabla.PNG)
 ![Diagrama tiempo invertido](docs/tareas-horas.png)
 
 # 6\. Recursos e infraestructura. Presupuesto.
