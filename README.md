@@ -307,7 +307,7 @@ La inversión inicial es prácticamente nula. El desarrollo lo lleva a cabo una 
 
 Los gastos mensuales se reducen a servicios domésticos proporcionales al uso profesional (electricidad e internet) y a un hosting básico para la aplicación en fase beta. No se incluye retribución del promotor ni servidores de alto rendimiento porque, al tratarse de un proyecto de carácter educativo en pleno desarrollo, la prioridad es probar la viabilidad funcional antes de escalar recursos.
 
-## Financiamiento {#financiamiento}
+## Financiamiento
 
 - _Capital propio_:
   - Se utiliza el equipamiento ya adquirido y recursos personales, sin inversión extra.
@@ -357,7 +357,16 @@ Los gastos mensuales se reducen a servicios domésticos proporcionales al uso pr
 
     - Licencia/Coste: Varias de estas herramientas ofrecen planes gratuitos, con opciones de pago que incluyen características adicionales.
 
----
+|    Presupuesto     |                        |            |            |
+| :----------------: | :--------------------: | :--------: | :--------: |
+|     **Tarea**      |      **Alcance**       | **Precio** | **Total**  |
+| Desarrollo técnico |          151h          |   25,00€   |   3.775€   |
+|   Render Pro.\*    |        mensual         |  ~16,48€   |     --     |
+|  MongoDB Atlas.\*  |    mensual (aprox)     |  ~140,00€  |     --     |
+|      Vercel\*      |        mensual         |  ~17,35€   |     --     |
+|      Hardware      | amortización a 10 años |  ~700,00€  |    70€     |
+|      Dominio       |         anual          |  ~12,00€   |    12€     |
+|                    |                        | **Total**  | **3.857€** |
 
 ---
 
